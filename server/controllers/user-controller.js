@@ -4,20 +4,7 @@ const Jdenticon = require("jdenticon");
 const path = require("path");
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
-
-function createError() {
-  const controller = (controllerName) => {
-    return `Error in controller: ${controllerName}`;
-  };
-  const internal = () => {
-    return "Internal server error";
-  };
-  const fieldMissing = () => {
-    return "All fields are required!";
-  };
-
-  return { controller, internal, fieldMissing };
-}
+const createError = require("./createError");
 
 const UserController = {
   register: async (req, res) => {
@@ -48,7 +35,7 @@ const UserController = {
       });
       res.json(user);
     } catch (error) {
-      console.error(createError().controller("User"), error);
+      console.error(createError().controller("Register"), error);
       res.status(500).json({ error: createError().internal() });
     }
   },
@@ -182,7 +169,7 @@ const UserController = {
 
       res.json(user);
     } catch (error) {
-      console.error(createError().controller("updateUser"), error);
+      console.error(createError().controller("current"), error);
       res.status(500).json({ error: createError().internal() });
     }
   },
