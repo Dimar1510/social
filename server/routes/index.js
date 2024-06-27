@@ -7,6 +7,8 @@ const {
   UserController,
   PostController,
   CommentController,
+  LikeController,
+  FollowController,
 } = require("../controllers");
 
 const storage = multer.diskStorage({
@@ -35,5 +37,11 @@ router.delete(
   authenticateToken,
   CommentController.deleteComment
 );
+
+router.post("/likes", authenticateToken, LikeController.likePost);
+router.delete("/likes/:id", authenticateToken, LikeController.unlikePost);
+
+router.post("/follow", authenticateToken, FollowController.followUser);
+router.delete("/follow/:id", authenticateToken, FollowController.unfollowUser);
 
 module.exports = router;
