@@ -8,7 +8,6 @@ const authenticateToken = (req, res, next) => {
   if (!token) {
     return res.status(401).json({ error: "Unauthorized" });
   }
-  console.log("auth");
 
   jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
     if (err) {
