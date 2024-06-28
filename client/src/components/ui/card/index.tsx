@@ -5,6 +5,7 @@ import {
   CardHeader,
   Card as NextCard,
   Spinner,
+  Tooltip,
 } from "@nextui-org/react"
 import {
   useLikePostMutation,
@@ -29,6 +30,7 @@ import { MdOutlineFavoriteBorder } from "react-icons/md"
 import { FaRegComment } from "react-icons/fa"
 import ErrorMessage from "../error-message"
 import { hasErrorField } from "../../../utils/has-error-field"
+import { BASE_URL } from "../../../constants"
 
 type Props = {
   avatarUrl: string
@@ -36,7 +38,7 @@ type Props = {
   authorId: string
   content: string
   commentId?: string
-  likesCount?: number
+  likes: any[]
   commentsCount?: number
   createdAt?: Date
   id?: string
@@ -50,7 +52,7 @@ const Card: React.FC<Props> = ({
   authorId = "",
   content = "",
   commentId = "",
-  likesCount = 0,
+  likes = [],
   commentsCount = 0,
   createdAt,
   id = "",
@@ -152,13 +154,45 @@ const Card: React.FC<Props> = ({
       </CardBody>
       {cardFor !== "comment" && (
         <CardFooter className="gap-3">
-          <div className="flex gap-5 items-center">
-            <button onClick={handleLike}>
-              <MetaInfo
-                count={likesCount}
-                Icon={likedByUser ? FcDislike : MdOutlineFavoriteBorder}
-              />
-            </button>
+          <div className="flex gap-5 items-center ">
+            <Tooltip
+              delay={250}
+              classNames={{ content: ["bg-default-600 text-default-100"] }}
+              placement="bottom-start"
+              content={
+                likes.length > 0 ? (
+                  <div className="flex flex-col gap-1">
+                    <p className="flex gap-1">
+                      <span>{likes.length}</span>
+                      {likes.length === 1 ? "person" : "people"} liked this post
+                    </p>
+                    <div className="flex gap-2">
+                      {likes.map(
+                        (like, index) =>
+                          index < 5 && (
+                            <Link to={`/users/${like.userId}`}>
+                              <img
+                                width={30}
+                                src={`${BASE_URL}${like.avatarUrl}`}
+                              />
+                            </Link>
+                          ),
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  "Like this post"
+                )
+              }
+            >
+              <button onClick={handleLike}>
+                <MetaInfo
+                  count={likes.length}
+                  Icon={likedByUser ? FcDislike : MdOutlineFavoriteBorder}
+                />
+              </button>
+            </Tooltip>
+
             <Link to={`/posts/${id}`}>
               <MetaInfo count={commentsCount} Icon={FaRegComment} />
             </Link>

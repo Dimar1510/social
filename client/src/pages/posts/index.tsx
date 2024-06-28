@@ -5,6 +5,7 @@ import Card from "../../components/ui/card"
 const Posts = () => {
   const { data } = useGetAllPostsQuery()
 
+  console.log(data)
   return (
     <>
       <div className="mb-10 w-full">
@@ -27,7 +28,7 @@ const Posts = () => {
                 avatarUrl={author.avatarUrl ?? ""}
                 content={content}
                 name={author.name ?? ""}
-                likesCount={likes.length}
+                likes={likes}
                 commentsCount={comments.length}
                 authorId={authorId}
                 id={id}

@@ -10,7 +10,6 @@ const Auth = () => {
   const [selected, setSelected] = useState("login")
 
   const isAuthenticated = useSelector(selectIsAuthenticated)
-  // const user = useSelector(selectUser)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -22,7 +21,7 @@ const Auth = () => {
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="flex flex-col">
-        <Card className="max-w-full w-[340px] h-[450px]">
+        <Card className="max-w-full w-[340px] h-[400px]">
           <CardBody className="overflow-hidden">
             <Tabs
               fullWidth

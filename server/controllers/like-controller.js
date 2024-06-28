@@ -11,6 +11,7 @@ const LikeController = {
     }
 
     try {
+      const user = await prisma.user.findUnique({ where: { id: userId } });
       const existingLike = await prisma.like.findFirst({
         where: { postId, userId },
       });
@@ -23,6 +24,7 @@ const LikeController = {
         data: {
           userId,
           postId,
+          avatarUrl: user.avatarUrl,
         },
       });
       res.json(like);
