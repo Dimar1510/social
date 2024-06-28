@@ -157,7 +157,7 @@ const Card: React.FC<Props> = ({
           <div className="flex gap-5 items-center ">
             <Tooltip
               delay={250}
-              classNames={{ content: ["bg-default-600 text-default-100"] }}
+              classNames={{ content: ["bg-default-600/80 text-default-100"] }}
               placement="bottom-start"
               content={
                 likes.length > 0 ? (
@@ -170,11 +170,18 @@ const Card: React.FC<Props> = ({
                       {likes.map(
                         (like, index) =>
                           index < 5 && (
-                            <Link to={`/users/${like.userId}`}>
+                            <Link
+                              key={like.id}
+                              to={`/users/${like.userId}`}
+                              className="group relative"
+                            >
                               <img
                                 width={30}
                                 src={`${BASE_URL}${like.avatarUrl}`}
                               />
+                              <div className="hidden group-hover:flex absolute w-max bg-black/70 px-2 py-1 rounded-md -top-5 ">
+                                {like.userName}
+                              </div>
                             </Link>
                           ),
                       )}
