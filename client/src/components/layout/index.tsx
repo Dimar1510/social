@@ -5,6 +5,7 @@ import Wrapper from "../wrapper"
 import { useSelector } from "react-redux"
 import { selectIsAuthenticated, selectUser } from "../../features/userSlice"
 import { useEffect } from "react"
+import Profile from "../profile"
 
 const Layout = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated)
@@ -25,6 +26,9 @@ const Layout = () => {
         </div>
         <div className="flex-1 p-4">
           <Outlet />
+        </div>
+        <div className="flex-2 p-4">
+          <div className="flex flex-col gap-5">{!user && <Profile />}</div>
         </div>
       </Wrapper>
     </>
