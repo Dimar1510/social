@@ -28,5 +28,8 @@ npx degit reduxjs/redux-templates/packages/vite-template-redux my-app
 
 ## todo:
 
+- [] system preferred theme
 - [] material UI
 - [] header
+- [] OAuth
+- [] static default profile pic
