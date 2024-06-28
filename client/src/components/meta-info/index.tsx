@@ -10,13 +10,11 @@ const MetaInfo: React.FC<Props> = ({ count, Icon }) => {
   return (
     <div className="flex items-center gap-2 cursor-pointer">
       {count > 0 && (
-        <button className="font-semibold text-default-400 text-lg">
-          {count}
-        </button>
+        <div className="font-semibold text-default-400 text-lg">{count}</div>
       )}
-      <button className="text-default-400 text-xl">
+      <div className="text-default-400 text-lg">
         <Icon />
-      </button>
+      </div>
     </div>
   )
 }
