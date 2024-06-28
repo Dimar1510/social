@@ -28,6 +28,7 @@ import { FcDislike } from "react-icons/fc"
 import { MdOutlineFavoriteBorder } from "react-icons/md"
 import { FaRegComment } from "react-icons/fa"
 import ErrorMessage from "../error-message"
+import { hasErrorField } from "../../../utils/has-error-field"
 
 type Props = {
   avatarUrl: string
@@ -66,6 +67,49 @@ const Card: React.FC<Props> = ({
   const navigate = useNavigate()
   const currentUser = useSelector(selectCurrent)
 
+  const refetchPosts = async () => {
+    switch (cardFor) {
+      case "post":
+        await triggerGetAllPosts().unwrap()
+        break
+      case "current-post":
+        await triggerGetAllPosts().unwrap()
+        break
+      case "comment":
+        await triggerGetPostById(id).unwrap()
+        break
+      default:
+        throw new Error("Wrong argument")
+    }
+  }
+
+  const handleDelete = async () => {
+    try {
+      switch (cardFor) {
+        case "post":
+          await deletePost(id).unwrap()
+          await refetchPosts()
+          break
+        case "current-post":
+          await deletePost(id).unwrap()
+          navigate("/")
+          break
+        case "comment":
+          await deleteComment(id).unwrap()
+          await refetchPosts()
+          break
+        default:
+          throw new Error("Wrong argument")
+      }
+    } catch (error) {
+      if (hasErrorField(error)) {
+        setError(error.data.error)
+      } else {
+        setError(error as string)
+      }
+    }
+  }
+
   return (
     <NextCard className="mb-8">
       <CardHeader className="justify-between items-center bg-transparent">
@@ -78,7 +122,7 @@ const Card: React.FC<Props> = ({
           />
         </Link>
         {authorId === currentUser?.id && (
-          <button className="cursor-pointer">
+          <button className="cursor-pointer" onClick={handleDelete}>
             {deletePostStatus.isLoading || deleteCommentStatus.isLoading ? (
               <Spinner />
             ) : (
