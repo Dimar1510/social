@@ -22,6 +22,8 @@ import { CiEdit } from "react-icons/ci"
 import ProfileInfo from "../../components/profile-info"
 import { formatToClientDate } from "../../utils/format-to-client-date"
 import CountInfo from "../../components/count-info"
+import EditProfile from "../../components/edit-profile"
+import { formatToClientDay } from "../../utils/format-to-client-day"
 
 const UserProfile = () => {
   const params = useParams<{ id: string }>()
@@ -58,6 +60,18 @@ const UserProfile = () => {
     } catch (error) {}
   }
 
+  const handleClose = async () => {
+    try {
+      if (params?.id) {
+        await triggerGetUserByIdQuery(params?.id)
+        await triggerCurrentQuery()
+        onClose()
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <>
       <Back />
@@ -89,7 +103,10 @@ const UserProfile = () => {
                 {data.isFollowing ? "Unfollow" : "Follow"}
               </Button>
             ) : (
-              <Button endContent={<CiEdit />}>Edit profile</Button>
+              // DIALOG
+              <Button onClick={() => onOpen()} endContent={<CiEdit />}>
+                Edit profile
+              </Button>
             )}
           </div>
         </Card>
@@ -98,7 +115,7 @@ const UserProfile = () => {
           <ProfileInfo title="Location" info={data.location} />
           <ProfileInfo
             title="Birthday"
-            info={formatToClientDate(data.dateOfBirth)}
+            info={formatToClientDay(data.dateOfBirth)}
           />
           <ProfileInfo title="About me" info={data.bio} />
           <div className="flex gap-2">
@@ -107,6 +124,7 @@ const UserProfile = () => {
           </div>
         </Card>
       </div>
+      <EditProfile isOpen={isOpen} onClose={handleClose} user={data} />
     </>
   )
 }

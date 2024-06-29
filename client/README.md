@@ -28,8 +28,10 @@ npx degit reduxjs/redux-templates/packages/vite-template-redux my-app
 
 ## todo:
 
-- [] system preferred theme
+- [] rename components
 - [] material UI
+- [] system preferred theme
+- [] follows of another user
 - [] header
 - [] OAuth
 - [] static default profile pic
