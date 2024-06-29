@@ -3,5 +3,5 @@ export const formatToClientDate = (date?: Date) => {
     return ""
   }
 
-  return new Date(date).toLocaleDateString()
+  return new Date(date).toLocaleString()
 }

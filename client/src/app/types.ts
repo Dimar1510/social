@@ -52,4 +52,5 @@ export type Comment = {
   userId: string
   post: Post
   postId: string
+  createdAt: Date
 }

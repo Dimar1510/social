@@ -75,7 +75,7 @@ const Card: React.FC<Props> = ({
         await triggerGetAllPosts().unwrap()
         break
       case "current-post":
-        await triggerGetAllPosts().unwrap()
+        await triggerGetPostById(id).unwrap()
         break
       case "comment":
         await triggerGetPostById(id).unwrap()
@@ -113,7 +113,7 @@ const Card: React.FC<Props> = ({
           navigate("/")
           break
         case "comment":
-          await deleteComment(id).unwrap()
+          await deleteComment(commentId).unwrap()
           await refetchPosts()
           break
         default:
@@ -135,18 +135,25 @@ const Card: React.FC<Props> = ({
           <User
             name={name}
             avatarUrl={avatarUrl}
-            description={createdAt && formatToClientDate(createdAt)}
+            description={createdAt && formatToClientDate(createdAt).toString()}
             className="text-small font-semibold leading-none text-default-600"
           />
         </Link>
         {authorId === currentUser?.id && (
-          <button className="cursor-pointer" onClick={handleDelete}>
-            {deletePostStatus.isLoading || deleteCommentStatus.isLoading ? (
-              <Spinner />
-            ) : (
-              <RiDeleteBinLine />
-            )}
-          </button>
+          <Tooltip
+            delay={250}
+            classNames={{ content: ["bg-default-600/80 text-default-100"] }}
+            placement="bottom-end"
+            content={`Delete this ${cardFor === "comment" ? "comment" : "post"}`}
+          >
+            <button className="cursor-pointer" onClick={handleDelete}>
+              {deletePostStatus.isLoading || deleteCommentStatus.isLoading ? (
+                <Spinner />
+              ) : (
+                <RiDeleteBinLine />
+              )}
+            </button>
+          </Tooltip>
         )}
       </CardHeader>
       <CardBody className="px-3 py-2 mb-5">
@@ -200,9 +207,16 @@ const Card: React.FC<Props> = ({
               </button>
             </Tooltip>
 
-            <Link to={`/posts/${id}`}>
-              <MetaInfo count={commentsCount} Icon={FaRegComment} />
-            </Link>
+            <Tooltip
+              delay={250}
+              classNames={{ content: ["bg-default-600/80 text-default-100"] }}
+              placement="bottom-start"
+              content={`Comments`}
+            >
+              <Link to={`/posts/${id}`}>
+                <MetaInfo count={commentsCount} Icon={FaRegComment} />
+              </Link>
+            </Tooltip>
           </div>
           <ErrorMessage error={error} />
         </CardFooter>
