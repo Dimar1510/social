@@ -11,7 +11,7 @@ const CurrentPost = () => {
   if (!data) {
     return <h2>No such post</h2>
   }
-  console.log(data)
+
   const {
     content,
     id,
