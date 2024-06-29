@@ -9,7 +9,6 @@ import {
   Modal,
   ModalBody,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   Textarea,
 } from "@nextui-org/react"
@@ -37,7 +36,7 @@ const EditProfile: React.FC<Props> = ({ isOpen, onClose, user }) => {
     defaultValues: {
       email: user?.email,
       name: user?.name,
-      dateOfBirth: user?.dateOfBirth,
+      dateOfBirth: user?.dateOfBirth?.substring(0, 10),
       bio: user?.bio,
       location: user?.location,
     },
@@ -83,76 +82,75 @@ const EditProfile: React.FC<Props> = ({ isOpen, onClose, user }) => {
       className={`${theme} text-foreground`}
     >
       <ModalContent>
-        {onClose => (
-          <>
-            <ModalHeader className="flex flex-col gap-1">
-              Edit your profile
-            </ModalHeader>
-            <ModalBody>
-              <form
-                className="flex flex-col gap-4"
-                onSubmit={handleSubmit(onSubmit)}
-              >
-                <Input
-                  control={control}
-                  name="email"
-                  label="Email"
-                  type="email"
-                  endContent={<MdOutlineEmail />}
-                  required="Field required"
-                />
-                <Input
-                  control={control}
-                  name="name"
-                  label="Name"
-                  type="text"
-                  endContent={<MdOutlineEmail />}
-                  required="Field required"
-                />
-                <input
-                  type="file"
-                  name="avatarUrl"
-                  required={false}
-                  onChange={handleFileUpload}
-                />
-                <Input
-                  control={control}
-                  name="dateOfBirth"
-                  label="Birthday"
-                  type="date"
-                />
-                <Controller
-                  name="bio"
-                  control={control}
-                  render={({ field }) => (
-                    <Textarea
-                      {...field}
-                      rows={4}
-                      placeholder="Tell something about yourself"
-                    />
-                  )}
-                />
-                <Input
-                  control={control}
-                  name="location"
-                  label="Location"
-                  type="text"
-                />
-                <ErrorMessage error={error} />
-                <div className="flex gap-2 justify-end">
-                  <Button
-                    fullWidth
-                    color="primary"
-                    type="submit"
-                    isLoading={isLoading}
-                  >
-                    Update profile
-                  </Button>
-                </div>
-              </form>
-            </ModalBody>
-          </>
-        )}
+        <>
+          <ModalHeader className="flex flex-col gap-1">
+            Edit your profile
+          </ModalHeader>
+          <ModalBody>
+            <form
+              className="flex flex-col gap-4"
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <Input
+                control={control}
+                name="email"
+                label="Email"
+                type="email"
+                endContent={<MdOutlineEmail />}
+                required="Field required"
+              />
+              <Input
+                control={control}
+                name="name"
+                label="Name"
+                type="text"
+                endContent={<MdOutlineEmail />}
+                required="Field required"
+              />
+              <input
+                type="file"
+                name="avatarUrl"
+                required={false}
+                onChange={handleFileUpload}
+              />
+              <Input
+                control={control}
+                name="dateOfBirth"
+                label="Birthday"
+                type="date"
+              />
+              <Controller
+                name="bio"
+                control={control}
+                render={({ field }) => (
+                  <Textarea
+                    {...field}
+                    rows={4}
+                    placeholder="Tell something about yourself"
+                    defaultValue=""
+                  />
+                )}
+              />
+              <Input
+                control={control}
+                name="location"
+                label="Location"
+                type="text"
+              />
+              <ErrorMessage error={error} />
+              <div className="flex gap-2 justify-end">
+                <Button
+                  fullWidth
+                  color="primary"
+                  type="submit"
+                  isLoading={isLoading}
+                >
+                  Update profile
+                </Button>
+              </div>
+            </form>
+          </ModalBody>
+        </>
       </ModalContent>
     </Modal>
   )

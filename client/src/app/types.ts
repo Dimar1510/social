@@ -4,7 +4,7 @@ export type User = {
   password: string
   name?: string
   avatarUrl?: string
-  dateOfBirth?: Date
+  dateOfBirth?: string
   createdAt: Date
   updatedAt: Date
   bio?: string

@@ -20,17 +20,17 @@ const UserController = {
         return res.status(400).json({ error: "Email already exists" });
       }
       const hashedPassword = await bcrypt.hash(password, 10);
-      const png = Jdenticon.toPng(name, 200);
-      const avatarName = `${name}_${Date.now()}.png`;
-      const avatarPath = path.join(__dirname, "/../uploads", avatarName);
-      fs.writeFileSync(avatarPath, png);
+      // const png = Jdenticon.toPng(name, 200);
+      // const avatarName = `${name}_${Date.now()}.png`;
+      // const avatarPath = path.join(__dirname, "/../uploads", avatarName);
+      // fs.writeFileSync(avatarPath, png);
 
       const user = await prisma.user.create({
         data: {
           email,
           password: hashedPassword,
           name,
-          avatarUrl: `/uploads/${avatarName}`,
+          avatarUrl: `/uploads/profile.png`,
         },
       });
       res.json(user);
@@ -129,9 +129,9 @@ const UserController = {
           email: email || undefined,
           name: name || undefined,
           avatarUrl: filePath ? `/${filePath}` : undefined,
-          dateOfBirth: dateOfBirth || undefined,
-          bio: bio || undefined,
-          location: location || undefined,
+          dateOfBirth: dateOfBirth || null,
+          bio: bio || null,
+          location: location || null,
         },
       });
 

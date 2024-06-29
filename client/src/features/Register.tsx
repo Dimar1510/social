@@ -76,12 +76,12 @@ const Register: React.FC<Props> = ({ setSelected }) => {
           className="cursor-pointer"
           onPress={() => setSelected("login")}
         >
-          Sign up
+          Sign in
         </Link>
       </p>
       <div className="flex gap-2 justify-end">
         <Button fullWidth color="primary" type="submit" isLoading={isLoading}>
-          Sign in
+          Sign up
         </Button>
       </div>
     </form>
