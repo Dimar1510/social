@@ -8,8 +8,28 @@ export default {
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontSize: {
+        clampLogo: "clamp(5rem, 20vw, 380px)",
+      },
+    },
   },
   darkMode: "class",
-  plugins: [nextui()],
+  plugins: [
+    nextui({
+      themes: {
+        dark: {
+          colors: {
+            background: "#0a0013",
+            primary: "#00ADB5",
+          },
+        },
+        light: {
+          colors: {
+            primary: "#ff8c00",
+          },
+        },
+      },
+    }),
+  ],
 }

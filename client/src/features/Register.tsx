@@ -1,26 +1,41 @@
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
 import Input from "../components/ui/input"
 import { useForm } from "react-hook-form"
-import { Button, Link } from "@nextui-org/react"
-import { useRegisterMutation } from "../app/services/userApi"
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+} from "@nextui-org/react"
+import {
+  useLazyCurrentQuery,
+  useLoginMutation,
+  useRegisterMutation,
+} from "../app/services/userApi"
 import { hasErrorField } from "../utils/has-error-field"
 import ErrorMessage from "../components/ui/error-message"
+import { ThemeContext } from "../components/theme-provider"
+import { useNavigate } from "react-router-dom"
 
 type Props = {
-  setSelected: (value: string) => void
+  isOpen: boolean
+  onClose: () => void
 }
 
 type Register = {
   email: string
   name: string
   password: string
+  password_repeat: string
 }
 
-const Register: React.FC<Props> = ({ setSelected }) => {
+const Register: React.FC<Props> = ({ isOpen, onClose }) => {
   const {
     handleSubmit,
     control,
     formState: { errors },
+    getValues,
   } = useForm<Register>({
     mode: "onChange",
     reValidateMode: "onBlur",
@@ -28,16 +43,27 @@ const Register: React.FC<Props> = ({ setSelected }) => {
       email: "",
       name: "",
       password: "",
+      password_repeat: "",
     },
   })
 
-  const [register, { isLoading }] = useRegisterMutation()
+  const [login, loginLoad] = useLoginMutation()
+  const navigate = useNavigate()
+  const [register, registerLoad] = useRegisterMutation()
+  const [triggerCurrentQuery] = useLazyCurrentQuery()
   const [error, setError] = useState("")
+  const { theme } = useContext(ThemeContext)
 
   const onSubmit = async (data: Register) => {
+    if (getValues("password") !== getValues("password_repeat")) {
+      setError("Passwords do not match")
+      return
+    }
     try {
       await register(data).unwrap()
-      setSelected("login")
+      await login(data).unwrap()
+      await triggerCurrentQuery().unwrap()
+      navigate("/")
     } catch (error) {
       if (hasErrorField(error)) {
         setError(error.data.error)
@@ -45,46 +71,71 @@ const Register: React.FC<Props> = ({ setSelected }) => {
     }
   }
 
+  const handleCLose = () => {
+    setError("")
+    onClose()
+  }
+
   return (
-    <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
-      <Input
-        control={control}
-        name="name"
-        label="Name"
-        type="text"
-        required="Field required"
-      />
-      <Input
-        control={control}
-        name="email"
-        label="Email"
-        type="email"
-        required="Field required"
-      />
-      <Input
-        control={control}
-        name="password"
-        label="Password"
-        type="password"
-        required="Field required"
-      />
-      <ErrorMessage error={error} />
-      <p className="text-center text-small flex gap-1 justify-center">
-        Already have an account?
-        <Link
-          size="sm"
-          className="cursor-pointer"
-          onPress={() => setSelected("login")}
-        >
-          Sign in
-        </Link>
-      </p>
-      <div className="flex gap-2 justify-end">
-        <Button fullWidth color="primary" type="submit" isLoading={isLoading}>
-          Sign up
-        </Button>
-      </div>
-    </form>
+    <Modal
+      isOpen={isOpen}
+      onClose={handleCLose}
+      className={`${theme} text-foreground pb-4`}
+    >
+      <ModalContent>
+        <>
+          <ModalHeader className="flex justify-center text-2xl">
+            Create an account
+          </ModalHeader>
+          <ModalBody>
+            <form
+              className="flex flex-col gap-4"
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <Input
+                control={control}
+                name="name"
+                label="Name"
+                type="text"
+                required="Field required"
+              />
+              <Input
+                control={control}
+                name="email"
+                label="Email"
+                type="email"
+                required="Field required"
+              />
+              <Input
+                control={control}
+                name="password"
+                label="Password"
+                type="password"
+                required="Field required"
+              />
+              <Input
+                control={control}
+                name="password_repeat"
+                label="Confirm password"
+                type="password"
+              />
+
+              <ErrorMessage error={error} />
+              <div className="flex gap-2 justify-end">
+                <Button
+                  fullWidth
+                  color="primary"
+                  type="submit"
+                  isLoading={loginLoad.isLoading || registerLoad.isLoading}
+                >
+                  Sign up
+                </Button>
+              </div>
+            </form>
+          </ModalBody>
+        </>
+      </ModalContent>
+    </Modal>
   )
 }
 

@@ -6,6 +6,7 @@ import { useSelector } from "react-redux"
 import { selectIsAuthenticated, selectUser } from "../../features/userSlice"
 import { useEffect } from "react"
 import Profile from "../profile"
+import { Footer } from "../footer/Footer"
 
 const Layout = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated)
@@ -31,6 +32,7 @@ const Layout = () => {
           <div className="flex flex-col gap-5">{!user && <Profile />}</div>
         </div>
       </Wrapper>
+      <Footer />
     </>
   )
 }
