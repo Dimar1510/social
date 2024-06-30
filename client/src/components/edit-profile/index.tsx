@@ -44,7 +44,18 @@ const EditProfile: React.FC<Props> = ({ isOpen, onClose, user }) => {
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files !== null) {
-      setSelectedFile(e.target.files[0])
+      const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i
+
+      if (e.target.files[0].size > 5 * 1048576) {
+        setError("Maximum file size is 5Mb")
+        e.target.value = ""
+      } else if (!allowedExtensions.exec(e.target.value)) {
+        setError("Invalid file type")
+        e.target.value = ""
+      } else {
+        setError("")
+        setSelectedFile(e.target.files[0])
+      }
     }
   }
 
@@ -64,6 +75,28 @@ const EditProfile: React.FC<Props> = ({ isOpen, onClose, user }) => {
         data.bio && formData.append("bio", data.bio)
         data.location && formData.append("location", data.location)
         selectedFile && formData.append("avatar", selectedFile)
+        await updateUser({ userData: formData, id }).unwrap()
+        onClose()
+      } catch (error) {
+        if (hasErrorField(error)) {
+          setError(error.data.error)
+        }
+      }
+    }
+  }
+
+  const onDeleteAvatar = async (data: User) => {
+    if (id) {
+      try {
+        const formData = new FormData()
+        data.dateOfBirth &&
+          formData.append(
+            "dateOfBirth",
+            new Date(data.dateOfBirth).toISOString(),
+          )
+        data.bio && formData.append("bio", data.bio)
+        data.location && formData.append("location", data.location)
+        formData.append("deleteAvatar", "true")
         await updateUser({ userData: formData, id }).unwrap()
         onClose()
       } catch (error) {
@@ -107,12 +140,20 @@ const EditProfile: React.FC<Props> = ({ isOpen, onClose, user }) => {
                 endContent={<MdOutlineEmail />}
                 required="Field required"
               />
-              <input
-                type="file"
-                name="avatarUrl"
-                required={false}
-                onChange={handleFileUpload}
-              />
+              <div className="flex justify-between items-center">
+                <input
+                  type="file"
+                  name="avatarUrl"
+                  required={false}
+                  onChange={handleFileUpload}
+                />
+                {user?.avatarUrl !== "/uploads/profile.png" && (
+                  <Button onClick={handleSubmit(onDeleteAvatar)}>
+                    Delete avatar
+                  </Button>
+                )}
+              </div>
+
               <Input
                 control={control}
                 name="dateOfBirth"

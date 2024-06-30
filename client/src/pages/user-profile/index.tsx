@@ -20,7 +20,6 @@ import {
 } from "react-icons/md"
 import { CiEdit } from "react-icons/ci"
 import ProfileInfo from "../../components/profile-info"
-import { formatToClientDate } from "../../utils/format-to-client-date"
 import CountInfo from "../../components/count-info"
 import EditProfile from "../../components/edit-profile"
 import { formatToClientDay } from "../../utils/format-to-client-day"

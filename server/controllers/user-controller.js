@@ -100,7 +100,7 @@ const UserController = {
 
   updateUser: async (req, res) => {
     const { id } = req.params;
-    const { email, name, dateOfBirth, bio, location } = req.body;
+    const { email, name, dateOfBirth, bio, location, deleteAvatar } = req.body;
 
     let filePath;
 
@@ -122,6 +122,8 @@ const UserController = {
           return res.status(400).json({ error: "Email already exists" });
         }
       }
+
+      if (deleteAvatar) filePath = "uploads/profile.png";
 
       const user = await prisma.user.update({
         where: { id },
