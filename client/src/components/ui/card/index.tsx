@@ -129,7 +129,7 @@ const Card: React.FC<Props> = ({
   }
 
   return (
-    <NextCard className="mb-8">
+    <NextCard className="mb-6" shadow="sm">
       <CardHeader className="justify-between items-center bg-transparent">
         <Link to={`/users/${authorId}`}>
           <User

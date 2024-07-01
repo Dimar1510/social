@@ -1,5 +1,5 @@
 const { nextui } = require("@nextui-org/react")
-
+const defaultTheme = require("tailwindcss/defaultTheme")
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -8,6 +8,10 @@ export default {
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    screens: {
+      xs: "475px",
+      ...defaultTheme.screens,
+    },
     extend: {
       fontSize: {
         clampLogo: "clamp(5rem, 20vw, 380px)",
@@ -20,13 +24,15 @@ export default {
       themes: {
         dark: {
           colors: {
-            background: "#0a0013",
+            content1: "#242524",
             primary: "#00ADB5",
+            background: "#1A1B1A",
           },
         },
         light: {
           colors: {
             primary: "#ff8c00",
+            background: "#EFEFEF",
           },
         },
       },

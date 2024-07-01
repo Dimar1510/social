@@ -7,7 +7,11 @@ import { Button, Textarea } from "@nextui-org/react"
 import ErrorMessage from "../ui/error-message"
 import { IoMdCreate } from "react-icons/io"
 
-const CreatePost = () => {
+type Props = {
+  onClose?: () => void
+}
+
+const CreatePost: React.FC<Props> = ({ onClose }) => {
   const [createPost] = useCreatePostMutation()
   const [triggerGetAllPosts] = useLazyGetAllPostsQuery()
 
@@ -25,6 +29,7 @@ const CreatePost = () => {
       await createPost({ content: data.post }).unwrap()
       setValue("post", "")
       await triggerGetAllPosts().unwrap()
+      if (onClose) onClose()
     } catch (error) {
       console.log(error)
     }
@@ -47,12 +52,7 @@ const CreatePost = () => {
         )}
       />
       {errors && <ErrorMessage error={error} />}
-      <Button
-        color="success"
-        className="flex-end flex"
-        endContent={<IoMdCreate />}
-        type="submit"
-      >
+      <Button color="primary" className="flex-end flex" type="submit">
         Add post
       </Button>
     </form>
