@@ -30,7 +30,7 @@ const Sidebar = () => {
   }
 
   return (
-    <nav className="flex xs:flex-col justify-between h-[50px] xs:h-screen ">
+    <nav className="flex xs:flex-col justify-between h-[50px] xs:h-screen gap-2">
       <ul className="flex xs:flex-col xs:gap-5 justify-between w-full">
         <li className="hidden xs:block">
           <Link to={"/"}>

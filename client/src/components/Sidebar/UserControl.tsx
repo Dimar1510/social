@@ -34,7 +34,7 @@ const UserControl = () => {
   const themeSelected = theme === "light"
 
   return (
-    <div className="flex flex-col gap-2 sm:pl-6 justify-start mt-1">
+    <div className="flex flex-col gap-2 sm:pl-6 justify-start mt-1 short:mb-6">
       <Link to={`/users/${id}`}>
         <Card className=" bg-transparent hover:bg-content1 " shadow="none">
           <CardBody className="p-0">
@@ -53,7 +53,7 @@ const UserControl = () => {
           </CardBody>
         </Card>
       </Link>
-      <div className="flex xs:flex-col-reverse sm:flex-row justify-between items-center mb-8 gap-4">
+      <div className="flex xs:flex-col-reverse sm:flex-row justify-between items-center mb-8 gap-4 short:hidden ">
         {isAuthenticated && (
           <Button
             color="default"

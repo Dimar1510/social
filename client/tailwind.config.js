@@ -13,6 +13,9 @@ export default {
       ...defaultTheme.screens,
     },
     extend: {
+      screens: {
+        short: { raw: "(max-height: 420px)" },
+      },
       fontSize: {
         clampLogo: "clamp(5rem, 20vw, 380px)",
       },
