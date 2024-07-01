@@ -31,7 +31,7 @@ const Sidebar = () => {
 
   return (
     <nav className="flex xs:flex-col justify-between h-[50px] xs:h-screen gap-2">
-      <ul className="flex xs:flex-col xs:gap-5 justify-between w-full">
+      <ul className="flex xs:flex-col xs:gap-5 justify-between w-full pr-6 xs:p-0">
         <li className="hidden xs:block">
           <Link to={"/"}>
             <div className="flex text-3xl px-6 justify-center sm:justify-start items-center">
@@ -54,7 +54,7 @@ const Sidebar = () => {
             <span className="hidden sm:inline">My followers</span>
           </NavButton>
         </li>
-        <li className="px-6 sm:self-center sm:w-full flex justify-center sm:justify-start items-center">
+        <li className="sm:px-6 sm:self-center sm:w-full flex justify-center sm:justify-start items-center">
           <Button
             onPress={onOpen}
             color="primary"

@@ -15,6 +15,7 @@ export type User = {
   likes: Like[]
   comments: Comment[]
   isFollowing?: boolean
+  userPosts: Post[]
 }
 
 export type Follows = {

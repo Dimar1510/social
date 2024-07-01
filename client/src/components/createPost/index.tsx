@@ -5,7 +5,10 @@ import {
 import { Controller, useForm } from "react-hook-form"
 import { Button, Textarea } from "@nextui-org/react"
 import ErrorMessage from "../ui/error-message"
-import { IoMdCreate } from "react-icons/io"
+
+import { useLazyGetUserByIdQuery } from "../../app/services/userApi"
+import { useSelector } from "react-redux"
+import { selectCurrent } from "../../features/userSlice"
 
 type Props = {
   onClose?: () => void
@@ -14,7 +17,8 @@ type Props = {
 const CreatePost: React.FC<Props> = ({ onClose }) => {
   const [createPost] = useCreatePostMutation()
   const [triggerGetAllPosts] = useLazyGetAllPostsQuery()
-
+  const [triggerGetUserByIdQuery] = useLazyGetUserByIdQuery()
+  const currentUser = useSelector(selectCurrent)
   const {
     handleSubmit,
     control,
@@ -24,11 +28,14 @@ const CreatePost: React.FC<Props> = ({ onClose }) => {
 
   const error = errors?.post?.message as string
 
+  const userId = currentUser === null ? "" : currentUser.id
+
   const onSubmit = handleSubmit(async data => {
     try {
       await createPost({ content: data.post }).unwrap()
       setValue("post", "")
       await triggerGetAllPosts().unwrap()
+      await triggerGetUserByIdQuery(userId)
       if (onClose) onClose()
     } catch (error) {
       console.log(error)

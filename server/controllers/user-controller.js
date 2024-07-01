@@ -91,7 +91,28 @@ const UserController = {
         },
       });
 
-      res.json({ ...user, isFollowing: Boolean(isFollowing) });
+      const userPosts = await prisma.post.findMany({
+        where: { authorId: id },
+        include: {
+          likes: true,
+          author: true,
+          comments: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+
+      const userPostsWithLikes = userPosts.map((post) => ({
+        ...post,
+        likedByUser: post.likes.some((like) => like.userId === userId),
+      }));
+
+      res.json({
+        ...user,
+        isFollowing: Boolean(isFollowing),
+        userPosts: userPostsWithLikes,
+      });
     } catch (error) {
       console.error(createError().controller("getUserById"), error);
       res.status(500).json({ error: createError().internal() });

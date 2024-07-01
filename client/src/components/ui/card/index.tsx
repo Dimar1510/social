@@ -31,6 +31,7 @@ import { FaRegComment } from "react-icons/fa"
 import ErrorMessage from "../error-message"
 import { hasErrorField } from "../../../utils/has-error-field"
 import { BASE_URL } from "../../../constants"
+import { useLazyGetUserByIdQuery } from "../../../app/services/userApi"
 
 type Props = {
   avatarUrl: string
@@ -42,7 +43,7 @@ type Props = {
   commentsCount?: number
   createdAt?: Date
   id?: string
-  cardFor: "comment" | "post" | "current-post"
+  cardFor: "comment" | "post" | "current-post" | "user-profile"
   likedByUser?: boolean
 }
 
@@ -63,6 +64,7 @@ const Card: React.FC<Props> = ({
   const [unlikePost] = useUnlikePostMutation()
   const [triggerGetAllPosts] = useLazyGetAllPostsQuery()
   const [triggerGetPostById] = useLazyGetPostByIdQuery()
+  const [triggerGetUserByIdQuery] = useLazyGetUserByIdQuery()
   const [deletePost, deletePostStatus] = useDeletePostMutation()
   const [deleteComment, deleteCommentStatus] = useDeleteCommentMutation()
   const [error, setError] = useState("")
@@ -79,6 +81,9 @@ const Card: React.FC<Props> = ({
         break
       case "comment":
         await triggerGetPostById(id).unwrap()
+        break
+      case "user-profile":
+        await triggerGetUserByIdQuery(authorId).unwrap()
         break
       default:
         throw new Error("Wrong argument")
@@ -104,6 +109,10 @@ const Card: React.FC<Props> = ({
   const handleDelete = async () => {
     try {
       switch (cardFor) {
+        case "user-profile":
+          await deletePost(id).unwrap()
+          await refetchPosts()
+          break
         case "post":
           await deletePost(id).unwrap()
           await refetchPosts()

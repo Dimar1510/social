@@ -1,5 +1,6 @@
 import React from "react"
 import { FaRegArrowAltCircleLeft } from "react-icons/fa"
+import { IoArrowBackOutline } from "react-icons/io5"
 import { useNavigate } from "react-router-dom"
 
 const Back = () => {
@@ -10,11 +11,10 @@ const Back = () => {
   }
   return (
     <button
-      className="text-default-500 flex items-center gap-2 mb-10 cursor-pointer"
+      className="text-default-500 flex items-center gap-2 cursor-pointer p-4"
       onClick={handleClick}
     >
-      <FaRegArrowAltCircleLeft />
-      Go back
+      <IoArrowBackOutline />
     </button>
   )
 }

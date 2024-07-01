@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom"
 import { useGetPostByIdQuery } from "../../app/services/postApi"
 import Card from "../../components/ui/card"
-import Back from "../../components/ui/back"
+import Back from "../../components/ui/back/Back"
 import CreateComment from "../../components/createComment"
 
 const CurrentPost = () => {
