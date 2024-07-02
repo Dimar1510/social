@@ -3,10 +3,13 @@ import { useGetPostByIdQuery } from "../../app/services/postApi"
 import Card from "../../components/ui/card"
 import Back from "../../components/ui/back/Back"
 import CreateComment from "../../components/createComment"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
 
 const CurrentPost = () => {
   const params = useParams<{ id: string }>()
   const { data } = useGetPostByIdQuery(params?.id ?? "")
+  const form = useForm()
 
   if (!data) {
     return <h2>No such post</h2>
@@ -22,6 +25,12 @@ const CurrentPost = () => {
     likes,
     createdAt,
   } = data
+
+  const handleReply = (name: string) => {
+    form.setValue("comment", form.getValues("comment") + `@${name}, `)
+    form.setFocus("comment")
+  }
+
   return (
     <>
       <Back />
@@ -36,6 +45,7 @@ const CurrentPost = () => {
         id={id}
         likedByUser={likedByUser}
         createdAt={createdAt}
+        handleReply={handleReply}
       />
       <div className="mt-10">
         {data.comments
@@ -51,12 +61,13 @@ const CurrentPost = () => {
                 id={id}
                 likes={likes}
                 createdAt={comment.createdAt}
+                handleReply={handleReply}
               />
             ))
           : null}
       </div>{" "}
       <div className="mt-10">
-        <CreateComment />
+        <CreateComment form={form} />
       </div>
     </>
   )

@@ -27,13 +27,14 @@ import { RiDeleteBinLine } from "react-icons/ri"
 import Typography from "../typography"
 import MetaInfo from "../../meta-info"
 import { FcDislike } from "react-icons/fc"
-import { MdOutlineFavoriteBorder } from "react-icons/md"
+import { MdFavorite, MdOutlineFavoriteBorder } from "react-icons/md"
 import { FaRegComment } from "react-icons/fa"
 import ErrorMessage from "../error-message"
 import { hasErrorField } from "../../../utils/has-error-field"
 import { BASE_URL } from "../../../constants"
 import { useLazyGetUserByIdQuery } from "../../../app/services/userApi"
 import { Like } from "../../../app/types"
+import { BsReply } from "react-icons/bs"
 
 type Props = {
   avatarUrl: string
@@ -47,6 +48,7 @@ type Props = {
   id?: string
   cardFor: "comment" | "post" | "current-post" | "user-profile" | "feed"
   likedByUser?: boolean
+  handleReply?: (name: string) => void
 }
 
 const Card: React.FC<Props> = ({
@@ -61,6 +63,7 @@ const Card: React.FC<Props> = ({
   id = "",
   cardFor = "post",
   likedByUser = false,
+  handleReply,
 }) => {
   const [likePost] = useLikePostMutation()
   const [unlikePost] = useUnlikePostMutation()
@@ -171,71 +174,96 @@ const Card: React.FC<Props> = ({
           </Tooltip>
         )}
       </CardHeader>
-      <CardBody className="px-3 py-2 mb-5">
-        <Typography>{content}</Typography>
+      <CardBody className="px-3 py-2">
+        <Typography size="text-md">{content}</Typography>
       </CardBody>
-      {cardFor !== "comment" && (
-        <CardFooter className="gap-3">
-          <div className="flex gap-5 items-center ">
+      <CardFooter className="gap-3">
+        <div className="flex gap-5 items-center ">
+          {cardFor !== "comment" && (
+            <>
+              <Tooltip
+                delay={250}
+                classNames={{ content: ["bg-default-600/80 text-default-100"] }}
+                placement="bottom-start"
+                content={`Comments`}
+              >
+                <Link to={`/posts/${id}`}>
+                  <MetaInfo
+                    color={"#1d9bf0"}
+                    count={commentsCount}
+                    icon={<FaRegComment />}
+                  />
+                </Link>
+              </Tooltip>
+              <Tooltip
+                delay={250}
+                classNames={{ content: ["bg-default-600/80 text-default-100"] }}
+                placement="bottom-start"
+                content={
+                  likes.length > 0 ? (
+                    <div className="flex flex-col gap-1">
+                      <p className="flex gap-1">
+                        <span>{likes.length}</span>
+                        {likes.length === 1 ? "person" : "people"} liked this
+                        post
+                      </p>
+                      <div className="flex gap-2">
+                        {likes.map(
+                          (like, index) =>
+                            index < 5 && (
+                              <Link
+                                key={like.id}
+                                to={`/users/${like.userId}`}
+                                className="group relative"
+                              >
+                                <img
+                                  className="size-8 object-cover"
+                                  src={`${BASE_URL}${like.user.avatarUrl}`}
+                                />
+                                <div className="hidden group-hover:flex absolute w-max bg-black/70 px-2 py-1 rounded-md -top-5 z-20">
+                                  {like.user.name}
+                                </div>
+                              </Link>
+                            ),
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    "Like this post"
+                  )
+                }
+              >
+                <button onClick={handleLike}>
+                  <MetaInfo
+                    count={likes.length}
+                    color={"#f91880"}
+                    icon={
+                      likedByUser ? (
+                        <MdFavorite color="#f91880" />
+                      ) : (
+                        <MdOutlineFavoriteBorder />
+                      )
+                    }
+                  />
+                </button>
+              </Tooltip>
+            </>
+          )}
+          {handleReply && (
             <Tooltip
               delay={250}
               classNames={{ content: ["bg-default-600/80 text-default-100"] }}
               placement="bottom-start"
-              content={
-                likes.length > 0 ? (
-                  <div className="flex flex-col gap-1">
-                    <p className="flex gap-1">
-                      <span>{likes.length}</span>
-                      {likes.length === 1 ? "person" : "people"} liked this post
-                    </p>
-                    <div className="flex gap-2">
-                      {likes.map(
-                        (like, index) =>
-                          index < 5 && (
-                            <Link
-                              key={like.id}
-                              to={`/users/${like.userId}`}
-                              className="group relative"
-                            >
-                              <img
-                                className="size-8 object-cover"
-                                src={`${BASE_URL}${like.user.avatarUrl}`}
-                              />
-                              <div className="hidden group-hover:flex absolute w-max bg-black/70 px-2 py-1 rounded-md -top-5 ">
-                                {like.user.name}
-                              </div>
-                            </Link>
-                          ),
-                      )}
-                    </div>
-                  </div>
-                ) : (
-                  "Like this post"
-                )
-              }
+              content={`Reply to user`}
             >
-              <button onClick={handleLike}>
-                <MetaInfo
-                  count={likes.length}
-                  Icon={likedByUser ? FcDislike : MdOutlineFavoriteBorder}
-                />
+              <button onClick={() => handleReply(name)}>
+                <MetaInfo color={"#388a72"} count={0} icon={<BsReply />} />
               </button>
             </Tooltip>
-
-            <Tooltip
-              delay={250}
-              classNames={{ content: ["bg-default-600/80 text-default-100"] }}
-              placement="bottom-start"
-              content={`Comments`}
-            >
-              <Link to={`/posts/${id}`}>
-                <MetaInfo count={commentsCount} Icon={FaRegComment} />
-              </Link>
-            </Tooltip>
-          </div>
-          <ErrorMessage error={error} />
-        </CardFooter>
-      )}
+          )}
+        </div>
+        <ErrorMessage error={error} />
+      </CardFooter>
     </NextCard>
   )
 }

@@ -1,12 +1,22 @@
 import { useLazyGetPostByIdQuery } from "../../app/services/postApi"
-import { Controller, useForm } from "react-hook-form"
+import {
+  Controller,
+  UseFormProps,
+  UseFormReturn,
+  useForm,
+} from "react-hook-form"
 import { Button, Textarea } from "@nextui-org/react"
 import ErrorMessage from "../ui/error-message"
 import { IoMdCreate } from "react-icons/io"
 import { useParams } from "react-router-dom"
 import { useCreateCommentMutation } from "../../app/services/commentApi"
+import React from "react"
 
-const CreateComment = () => {
+type Props = {
+  form: UseFormReturn
+}
+
+const CreateComment: React.FC<Props> = ({ form }) => {
   const { id } = useParams<{ id: string }>()
   const [createComment] = useCreateCommentMutation()
   const [getPostById] = useLazyGetPostByIdQuery()
@@ -16,7 +26,7 @@ const CreateComment = () => {
     control,
     formState: { errors },
     setValue,
-  } = useForm()
+  } = form
 
   const error = errors?.post?.message as string
 
