@@ -53,7 +53,7 @@ const ButtonGroup: React.FC<Props> = ({
         )}
         <Button as={NextLink} href={`/following/${data.id}`}>
           <span>{data.following.length}</span>
-          <span>follower</span>
+          <span>following</span>
         </Button>
         <Button as={NextLink} href={`/followers/${data.id}`}>
           <span>{data.followers.length}</span>

@@ -17,8 +17,8 @@ import Layout from "./components/layout/Layout"
 import Posts from "./pages/posts"
 import CurrentPost from "./pages/current-post"
 import UserProfile from "./pages/user-profile/UserProfile"
-import Followers from "./pages/followers"
-import Following from "./pages/following"
+import Followers from "./pages/followers/Followers"
+import Following from "./pages/following/Following"
 import AuthGuard from "./features/AuthGuard"
 
 const router = createBrowserRouter([
