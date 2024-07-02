@@ -18,7 +18,7 @@ const Following = () => {
   }
 
   const isCurrentUser = params.id === currentUser?.id
-
+  console.log(data)
   return (
     <>
       <Card className="flex-row p-2 mb-6" shadow="sm">
@@ -37,7 +37,7 @@ const Following = () => {
             {isCurrentUser ? `You are ` : `${data.name} is `}
             {`following (${data.followers.length}):`}
           </h2>
-          <div className="min-h-[40px] flex gap-4 flex-wrap justify-center overflow-hidden relative after:text-center after:text-lg empty:after:content-['No_search_results'] after:size-full after:absolute after:left-0 after:top-0 ">
+          <div className="z-10 min-h-[40px] flex gap-4 flex-wrap justify-center overflow-hidden relative after:text-center after:text-lg empty:after:content-['No_search_results'] after:size-full after:absolute after:left-0 after:top-0 after:-z-10">
             {data.following?.map(
               user =>
                 user.following.name?.toLowerCase().includes(search) && (
