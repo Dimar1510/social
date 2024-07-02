@@ -4,7 +4,6 @@ import Wrapper from "../wrapper"
 import { useSelector } from "react-redux"
 import { selectIsAuthenticated } from "../../features/userSlice"
 import { useEffect } from "react"
-import Header from "../header"
 
 const Layout = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated)

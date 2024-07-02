@@ -50,6 +50,32 @@ const PostController = {
     }
   },
 
+  getFeedPosts: async (req, res) => {
+    const userId = req.user.userId;
+    const followingIds = [];
+    try {
+      const following = await prisma.follows.findMany({
+        where: { followerId: userId },
+      });
+      following.forEach((item) => followingIds.push(item.followingId));
+      const feedPosts = await prisma.post.findMany({
+        where: { authorId: { in: followingIds } },
+        include: {
+          likes: true,
+          author: true,
+          comments: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+      res.json(feedPosts);
+    } catch (error) {
+      console.error(createError().controller("getFeedPosts"), error);
+      res.status(500).json({ error: createError().internal() });
+    }
+  },
+
   getPostById: async (req, res) => {
     const { id } = req.params;
     const userId = req.user.userId;

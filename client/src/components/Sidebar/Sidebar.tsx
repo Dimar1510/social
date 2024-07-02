@@ -17,7 +17,7 @@ import { useContext } from "react"
 import { ThemeContext } from "../theme-provider"
 
 import UserControl from "./UserControl"
-import { PiUsers, PiUsersThree } from "react-icons/pi"
+import { PiNewspaperClippingLight, PiUsers, PiUsersThree } from "react-icons/pi"
 import { IoCreateOutline } from "react-icons/io5"
 
 const Sidebar = () => {
@@ -41,6 +41,10 @@ const Sidebar = () => {
 
           <NavButton href="/" icon={<AiOutlineHome />}>
             <span className="hidden sm:inline">All Posts</span>
+          </NavButton>
+
+          <NavButton href="/feed" icon={<PiNewspaperClippingLight />}>
+            <span className="hidden sm:inline">My feed</span>
           </NavButton>
 
           <NavButton href={`/following/${current.id}`} icon={<PiUsers />}>

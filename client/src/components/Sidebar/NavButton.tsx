@@ -13,7 +13,7 @@ const NavButton: React.FC<Props> = ({ children, icon, href }) => {
   return (
     <Link
       href={href}
-      className="flex gap-2 justify-center sm:justify-start text-2xl sm:text-xl min-w-[20px] text-default-800"
+      className="flex items-center gap-2 justify-center sm:justify-start text-2xl sm:text-xl min-w-[20px] text-default-800"
     >
       {icon}
       {children}

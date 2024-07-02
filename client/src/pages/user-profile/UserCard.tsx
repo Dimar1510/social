@@ -6,8 +6,6 @@ import {
   useFollowUserMutation,
   useUnfollowUserMutation,
 } from "../../app/services/followApi"
-
-import Back from "../../components/ui/back/Back"
 import { BASE_URL } from "../../constants"
 import { CiLocationOn } from "react-icons/ci"
 import { formatToClientDay } from "../../utils/format-to-client-day"
@@ -42,23 +40,10 @@ const UserCard: React.FC<Props> = ({ data, userId, onOpen }) => {
     } catch (error) {}
   }
 
-  const postsLength = data.userPosts.length
   const isCurrentUser = currentUser?.id === userId
 
   return (
     <>
-      <Card className="flex-row p-2 mb-6" shadow="sm">
-        <Back />
-        <div className="flex flex-col">
-          <div className="font-bold max-w-[300px] text-ellipsis break-words">
-            {data.name}
-          </div>
-          <div className="text-small text-default-400 flex">
-            {postsLength}
-            {postsLength === 1 ? " post" : " posts"}
-          </div>
-        </div>
-      </Card>
       <Card className="p-3" shadow="sm">
         <CardHeader className="flex justify-between items-center xs:items-start flex-col xs:flex-row">
           <Image

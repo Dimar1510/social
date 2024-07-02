@@ -20,6 +20,7 @@ import UserProfile from "./pages/user-profile/UserProfile"
 import Followers from "./pages/followers/Followers"
 import Following from "./pages/following/Following"
 import AuthGuard from "./features/AuthGuard"
+import Feed from "./pages/feed/Feed"
 
 const router = createBrowserRouter([
   {
@@ -67,6 +68,7 @@ const App = () => {
             <Route path="users/:id" element={<UserProfile />} />
             <Route path="followers/:id" element={<Followers />} />
             <Route path="following/:id" element={<Following />} />
+            <Route path="feed" element={<Feed />} />
           </Route>
         </Routes>
       </ThemeProvider>

@@ -18,6 +18,13 @@ export const postApi = api.injectEndpoints({
       }),
     }),
 
+    getFeedPosts: builder.query<Post[], void>({
+      query: () => ({
+        url: "/posts/feed",
+        method: "GET",
+      }),
+    }),
+
     getPostById: builder.query<Post, string>({
       query: id => ({
         url: `/posts/${id}`,
@@ -38,11 +45,13 @@ export const {
   useCreatePostMutation,
   useGetAllPostsQuery,
   useLazyGetAllPostsQuery,
+  useGetFeedPostsQuery,
+  useLazyGetFeedPostsQuery,
   useGetPostByIdQuery,
   useLazyGetPostByIdQuery,
   useDeletePostMutation,
 } = postApi
 
 export const {
-  endpoints: { createPost, getAllPosts, getPostById, deletePost },
+  endpoints: { createPost, getFeedPosts, getAllPosts, getPostById, deletePost },
 } = postApi

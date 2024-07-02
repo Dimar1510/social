@@ -35,7 +35,7 @@ const Following = () => {
           <SearchInput value={search} onChange={setSearch} />
           <h2 className="text-xl text-center">
             {isCurrentUser ? `You are ` : `${data.name} is `}
-            {`following (${data.followers.length}):`}
+            {`following (${data.following.length}):`}
           </h2>
           <div className="z-10 min-h-[40px] flex gap-4 flex-wrap justify-center overflow-hidden relative after:text-center after:text-lg empty:after:content-['No_search_results'] after:size-full after:absolute after:left-0 after:top-0 after:-z-10">
             {data.following?.map(
