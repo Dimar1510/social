@@ -1,20 +1,43 @@
 import { useSelector } from "react-redux"
 import { selectCurrent } from "../../features/userSlice"
 import { Link, useParams } from "react-router-dom"
-import { Card, CardBody } from "@nextui-org/react"
+import { Button, Card, CardBody, Divider } from "@nextui-org/react"
 import User from "../../components/user"
-import { useGetUserByIdQuery } from "../../app/services/userApi"
+import {
+  useGetUserByIdQuery,
+  useLazyGetUserByIdQuery,
+} from "../../app/services/userApi"
 import Back from "../../components/ui/back/Back"
 import SearchInput from "../../components/ui/searchInput/SearchInput"
 import { useState } from "react"
+import {
+  MdOutlinePersonAddAlt1,
+  MdOutlinePersonAddDisabled,
+} from "react-icons/md"
+import {
+  useFollowUserMutation,
+  useUnfollowUserMutation,
+} from "../../app/services/followApi"
 
 const Following = () => {
   const params = useParams<{ id: string }>()
   const { data } = useGetUserByIdQuery(params?.id ?? "")
   const currentUser = useSelector(selectCurrent)
   const [search, setSearch] = useState("")
+  const [followUser] = useFollowUserMutation()
+  const [unfollowUser] = useUnfollowUserMutation()
+  const [triggerGetUserByIdQuery] = useLazyGetUserByIdQuery()
   if (!data) {
     return <h2>User not found</h2>
+  }
+
+  const handleFollow = async (userId: string, id: string) => {
+    try {
+      if (userId) {
+        await unfollowUser(userId).unwrap()
+        await triggerGetUserByIdQuery(id)
+      }
+    } catch (error) {}
   }
 
   const isCurrentUser = params.id === currentUser?.id
@@ -36,24 +59,37 @@ const Following = () => {
             {isCurrentUser ? `You are ` : `${data.name} is `}
             {`following (${data.following.length}):`}
           </h2>
-          <div className="z-10 min-h-[40px] flex gap-4 flex-wrap justify-center overflow-hidden relative after:text-center after:text-lg empty:after:content-['No_search_results'] after:size-full after:absolute after:left-0 after:top-0 after:-z-10">
+          <div className="z-10 min-h-[40px] flex flex-col justify-center overflow-hidden relative after:text-center after:text-lg empty:after:content-['No_search_results'] after:size-full after:absolute after:left-0 after:top-0 after:-z-10">
             {data.following?.map(
               user =>
                 user.following.name?.toLowerCase().includes(search) && (
-                  <Link
-                    to={`/users/${user.following.id}`}
-                    key={user.following.id}
-                  >
-                    <Card shadow="sm">
-                      <CardBody className="block">
+                  <div key={user.following.id}>
+                    <div className="flex justify-between w-full items-center">
+                      <Link to={`/users/${user.following.id}`}>
                         <User
+                          className="my-6"
                           name={user.following.name ?? ""}
                           avatarUrl={user.following.avatarUrl ?? ""}
                           description={user.following.email ?? ""}
                         />
-                      </CardBody>
-                    </Card>
-                  </Link>
+                      </Link>
+                      {isCurrentUser && (
+                        <div className="">
+                          <Button
+                            variant="flat"
+                            className="items-center hover:bg-danger-200"
+                            onClick={() =>
+                              handleFollow(user.followingId, data.id)
+                            }
+                            endContent={<MdOutlinePersonAddDisabled />}
+                          >
+                            Unfollow
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                    <Divider />
+                  </div>
                 ),
             )}
           </div>
