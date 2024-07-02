@@ -18,7 +18,6 @@ const Following = () => {
   }
 
   const isCurrentUser = params.id === currentUser?.id
-  console.log(data)
   return (
     <>
       <Card className="flex-row p-2 mb-6" shadow="sm">

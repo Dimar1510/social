@@ -24,8 +24,6 @@ const LikeController = {
         data: {
           userId,
           postId,
-          avatarUrl: user.avatarUrl,
-          userName: user.name,
         },
       });
       res.json(like);

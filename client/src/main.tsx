@@ -12,7 +12,7 @@ import {
 import ThemeProvider from "./components/theme-provider"
 import Auth from "./pages/auth/Auth"
 import Layout from "./components/layout/Layout"
-import Posts from "./pages/posts"
+import Posts from "./pages/posts/Posts"
 import CurrentPost from "./pages/current-post"
 import UserProfile from "./pages/user-profile/UserProfile"
 import Followers from "./pages/followers/Followers"

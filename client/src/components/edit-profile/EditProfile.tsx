@@ -37,8 +37,8 @@ const EditProfile: React.FC<Props> = ({ isOpen, onClose, user }) => {
       email: user?.email,
       name: user?.name,
       dateOfBirth: user?.dateOfBirth?.substring(0, 10),
-      bio: user?.bio,
-      location: user?.location,
+      bio: user?.bio || "",
+      location: user?.location || "",
     },
   })
 

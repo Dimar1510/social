@@ -25,11 +25,14 @@ const PostController = {
 
   getAllPosts: async (req, res) => {
     const userId = req.user.userId;
-
     try {
       const posts = await prisma.post.findMany({
         include: {
-          likes: true,
+          likes: {
+            include: {
+              user: true,
+            },
+          },
           author: true,
           comments: true,
         },
@@ -58,10 +61,15 @@ const PostController = {
         where: { followerId: userId },
       });
       following.forEach((item) => followingIds.push(item.followingId));
+
       const feedPosts = await prisma.post.findMany({
         where: { authorId: { in: followingIds } },
         include: {
-          likes: true,
+          likes: {
+            include: {
+              user: true,
+            },
+          },
           author: true,
           comments: true,
         },
@@ -69,7 +77,12 @@ const PostController = {
           createdAt: "desc",
         },
       });
-      res.json(feedPosts);
+
+      const feedPostsWithLikes = feedPosts.map((post) => ({
+        ...post,
+        likedByUser: post.likes.some((like) => like.userId === userId),
+      }));
+      res.json(feedPostsWithLikes);
     } catch (error) {
       console.error(createError().controller("getFeedPosts"), error);
       res.status(500).json({ error: createError().internal() });
@@ -84,7 +97,11 @@ const PostController = {
       const post = await prisma.post.findUnique({
         where: { id },
         include: {
-          likes: true,
+          likes: {
+            include: {
+              user: true,
+            },
+          },
           author: true,
           comments: {
             include: {

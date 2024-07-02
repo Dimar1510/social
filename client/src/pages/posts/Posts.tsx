@@ -4,6 +4,7 @@ import Card from "../../components/ui/card"
 
 const Posts = () => {
   const { data } = useGetAllPostsQuery()
+
   return (
     <>
       <div className="mb-10 w-full">

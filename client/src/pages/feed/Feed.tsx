@@ -38,7 +38,7 @@ const Feed = () => {
                   id={id}
                   likedByUser={likedByUser}
                   createdAt={createdAt}
-                  cardFor="post"
+                  cardFor="feed"
                 />
               ),
             )

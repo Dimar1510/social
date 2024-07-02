@@ -102,7 +102,11 @@ const UserController = {
       const userPosts = await prisma.post.findMany({
         where: { authorId: id },
         include: {
-          likes: true,
+          likes: {
+            include: {
+              user: true,
+            },
+          },
           author: true,
           comments: true,
         },

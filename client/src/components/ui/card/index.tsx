@@ -14,6 +14,7 @@ import {
 import {
   useDeletePostMutation,
   useLazyGetAllPostsQuery,
+  useLazyGetFeedPostsQuery,
   useLazyGetPostByIdQuery,
 } from "../../../app/services/postApi"
 import { useDeleteCommentMutation } from "../../../app/services/commentApi"
@@ -32,6 +33,7 @@ import ErrorMessage from "../error-message"
 import { hasErrorField } from "../../../utils/has-error-field"
 import { BASE_URL } from "../../../constants"
 import { useLazyGetUserByIdQuery } from "../../../app/services/userApi"
+import { Like } from "../../../app/types"
 
 type Props = {
   avatarUrl: string
@@ -39,11 +41,11 @@ type Props = {
   authorId: string
   content: string
   commentId?: string
-  likes: any[]
+  likes: Like[]
   commentsCount?: number
   createdAt?: Date
   id?: string
-  cardFor: "comment" | "post" | "current-post" | "user-profile"
+  cardFor: "comment" | "post" | "current-post" | "user-profile" | "feed"
   likedByUser?: boolean
 }
 
@@ -65,6 +67,7 @@ const Card: React.FC<Props> = ({
   const [triggerGetAllPosts] = useLazyGetAllPostsQuery()
   const [triggerGetPostById] = useLazyGetPostByIdQuery()
   const [triggerGetUserByIdQuery] = useLazyGetUserByIdQuery()
+  const [triggerGetAllFeed] = useLazyGetFeedPostsQuery()
   const [deletePost, deletePostStatus] = useDeletePostMutation()
   const [deleteComment, deleteCommentStatus] = useDeleteCommentMutation()
   const [error, setError] = useState("")
@@ -75,6 +78,9 @@ const Card: React.FC<Props> = ({
     switch (cardFor) {
       case "post":
         await triggerGetAllPosts().unwrap()
+        break
+      case "feed":
+        await triggerGetAllFeed().unwrap()
         break
       case "current-post":
         await triggerGetPostById(id).unwrap()
@@ -192,11 +198,11 @@ const Card: React.FC<Props> = ({
                               className="group relative"
                             >
                               <img
-                                width={30}
-                                src={`${BASE_URL}${like.avatarUrl}`}
+                                className="size-8 object-cover"
+                                src={`${BASE_URL}${like.user.avatarUrl}`}
                               />
                               <div className="hidden group-hover:flex absolute w-max bg-black/70 px-2 py-1 rounded-md -top-5 ">
-                                {like.userName}
+                                {like.user.name}
                               </div>
                             </Link>
                           ),
