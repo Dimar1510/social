@@ -5,6 +5,8 @@ import {
 } from "react-icons/md"
 import { CiEdit } from "react-icons/ci"
 import { User } from "../../app/types"
+import { Link } from "react-router-dom"
+import { Link as NextLink } from "@nextui-org/react"
 
 type Props = {
   data: User
@@ -49,11 +51,11 @@ const ButtonGroup: React.FC<Props> = ({
             Edit profile
           </Button>
         )}
-        <Button>
+        <Button as={NextLink} href={`/following/${data.id}`}>
           <span>{data.following.length}</span>
-          <span>following</span>
+          <span>follower</span>
         </Button>
-        <Button>
+        <Button as={NextLink} href={`/followers/${data.id}`}>
           <span>{data.followers.length}</span>
           <span>follower{data.followers.length !== 1 && "s"}</span>
         </Button>

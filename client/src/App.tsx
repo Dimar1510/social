@@ -5,9 +5,11 @@ import { store } from "./app/store"
 import "./index.css"
 import { NextUIProvider } from "@nextui-org/react"
 import {
-  BrowserRouter,
+  Route,
   RouterProvider,
+  Routes,
   createBrowserRouter,
+  useNavigate,
 } from "react-router-dom"
 import ThemeProvider from "./components/theme-provider"
 import Auth from "./pages/auth/Auth"
@@ -18,9 +20,6 @@ import UserProfile from "./pages/user-profile/UserProfile"
 import Followers from "./pages/followers"
 import Following from "./pages/following"
 import AuthGuard from "./features/AuthGuard"
-import App from "./App"
-
-const container = document.getElementById("root")
 
 const router = createBrowserRouter([
   {
@@ -55,22 +54,24 @@ const router = createBrowserRouter([
   },
 ])
 
-if (container) {
-  const root = createRoot(container)
-
-  root.render(
-    <React.StrictMode>
-      <Provider store={store}>
-        <AuthGuard>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </AuthGuard>
-      </Provider>
-    </React.StrictMode>,
-  )
-} else {
-  throw new Error(
-    "Root element with ID 'root' was not found in the document. Ensure there is a corresponding HTML element with the ID 'root' in your HTML file.",
+const App = () => {
+  const navigate = useNavigate()
+  return (
+    <NextUIProvider navigate={navigate}>
+      <ThemeProvider>
+        <Routes>
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/" element={<Layout />}>
+            <Route path="" element={<Posts />} />
+            <Route path="posts/:id" element={<CurrentPost />} />
+            <Route path="users/:id" element={<UserProfile />} />
+            <Route path="followers/:id" element={<Followers />} />
+            <Route path="following/:id" element={<Following />} />
+          </Route>
+        </Routes>
+      </ThemeProvider>
+    </NextUIProvider>
   )
 }
+
+export default App

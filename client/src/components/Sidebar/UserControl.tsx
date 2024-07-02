@@ -34,7 +34,7 @@ const UserControl = () => {
   const themeSelected = theme === "light"
 
   return (
-    <div className="flex flex-col gap-2 sm:pl-6 justify-start mt-1 short:mb-6">
+    <div className="flex flex-col gap-2 justify-start short:mb-6">
       <Link to={`/users/${id}`}>
         <Card className=" bg-transparent hover:bg-content1 " shadow="none">
           <CardBody className="p-0">
@@ -48,17 +48,17 @@ const UserControl = () => {
               name={""}
               description={""}
               avatarProps={{ src: `${BASE_URL}${avatarUrl}` }}
-              className="sm:hidden pr-6 xs:pr-3"
+              className="sm:hidden"
             />
           </CardBody>
         </Card>
       </Link>
-      <div className="flex xs:flex-col-reverse sm:flex-row justify-between items-center mb-8 gap-4 short:hidden ">
+      <div className="xs:flex xs:flex-col-reverse sm:flex-row justify-between items-center mb-8 gap-4 hidden short:hidden ">
         {isAuthenticated && (
           <Button
             color="default"
             variant="flat"
-            className="gap-2 flex-end hidden xs:flex sm:w-4/5 p-4 min-w-fit self-start ml-4 sm:ml-0"
+            className="gap-2 flex-end hidden xs:flex sm:w-4/5 p-4 min-w-fit self-start sm:ml-0"
             onClick={handleLogout}
           >
             <CiLogout />
@@ -71,7 +71,7 @@ const UserControl = () => {
           onValueChange={toggleTheme}
           endContent={<LuSunMedium />}
           startContent={<FaRegMoon />}
-          className="hidden xs:block"
+          className="hidden xs:block mt-2"
         ></Switch>
       </div>
     </div>

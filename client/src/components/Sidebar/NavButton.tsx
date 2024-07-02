@@ -1,6 +1,7 @@
+import { Button } from "@nextui-org/react"
 import React from "react"
-import Button from "../ui/button"
-import { Link } from "react-router-dom"
+
+import { Link } from "@nextui-org/react"
 
 type Props = {
   children: React.ReactNode
@@ -10,13 +11,12 @@ type Props = {
 
 const NavButton: React.FC<Props> = ({ children, icon, href }) => {
   return (
-    <Link to={href}>
-      <Button
-        className="flex justify-center sm:justify-start text-2xl sm:text-xl min-w-[20px] pl-6"
-        icon={icon}
-      >
-        {children}
-      </Button>
+    <Link
+      href={href}
+      className="flex gap-2 justify-center sm:justify-start text-2xl sm:text-xl min-w-[20px] text-default-800"
+    >
+      {icon}
+      {children}
     </Link>
   )
 }

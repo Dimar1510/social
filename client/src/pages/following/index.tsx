@@ -1,18 +1,21 @@
 import { useSelector } from "react-redux"
-import { selectCurrent } from "../../features/userSlice"
-import { Link } from "react-router-dom"
-import { Card, CardBody } from "@nextui-org/react"
+import { selectCurrent, selectUser } from "../../features/userSlice"
+import { Link, useParams } from "react-router-dom"
+import { Card, CardBody, useDisclosure } from "@nextui-org/react"
 import User from "../../components/user"
+import { useGetUserByIdQuery } from "../../app/services/userApi"
 
 const Following = () => {
-  const currentUser = useSelector(selectCurrent)
-  if (!currentUser) {
-    return null
+  const params = useParams<{ id: string }>()
+  const { data } = useGetUserByIdQuery(params?.id ?? "")
+
+  if (!data) {
+    return <h2>User not found</h2>
   }
 
-  return currentUser.following.length > 0 ? (
+  return data.following.length > 0 ? (
     <div className="gap-5 flex-col">
-      {currentUser.following.map(user => (
+      {data.following.map(user => (
         <Link to={`/users/${user.following.id}`} key={user.following.id}>
           <Card>
             <CardBody className="block">
@@ -27,7 +30,7 @@ const Following = () => {
       ))}
     </div>
   ) : (
-    <h2>You are not following anyone</h2>
+    <h2>Start following someone</h2>
   )
 }
 

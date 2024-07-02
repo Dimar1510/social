@@ -64,13 +64,13 @@ const Auth = () => {
 
               <Switch
                 isSelected={!themeSelected}
-                size="lg"
+                size="md"
                 onValueChange={toggleTheme}
                 endContent={<LuSunMedium />}
                 startContent={<FaRegMoon />}
                 className="self-center sm:self-start"
               >
-                {theme === "light" ? "Light mode" : "Dark mode"}
+                <span className="text-sm up">Dark mode</span>
               </Switch>
             </div>
           </div>

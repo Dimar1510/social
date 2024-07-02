@@ -30,45 +30,54 @@ const Sidebar = () => {
   }
 
   return (
-    <nav className="flex xs:flex-col justify-between h-[50px] xs:h-screen gap-2">
-      <ul className="flex xs:flex-col xs:gap-5 justify-between w-full pr-6 xs:p-0">
-        <li className="hidden xs:block">
-          <Link to={"/"}>
-            <div className="flex text-3xl px-6 justify-center sm:justify-start items-center">
+    <>
+      <nav className="flex xs:flex-col justify-between h-[50px] xs:h-screen gap-8 px-4 items-center">
+        <div className="flex xs:flex-col xs:gap-5 justify-between w-full xs:p-0">
+          <Link className="hidden xs:block" to={"/"}>
+            <div className="flex text-3xl justify-center sm:justify-start items-center">
               <GiBirdTwitter />
             </div>
           </Link>
-        </li>
-        <li>
+
           <NavButton href="/" icon={<AiOutlineHome />}>
             <span className="hidden sm:inline">All Posts</span>
           </NavButton>
-        </li>
-        <li>
-          <NavButton href="following" icon={<PiUsers />}>
+
+          <NavButton href={`/following/${current.id}`} icon={<PiUsers />}>
             <span className="hidden sm:inline">Following</span>
           </NavButton>
-        </li>
-        <li>
-          <NavButton href="followers" icon={<PiUsersThree />}>
+
+          <NavButton href={`/followers/${current.id}`} icon={<PiUsersThree />}>
             <span className="hidden sm:inline">My followers</span>
           </NavButton>
-        </li>
-        <li className="sm:px-6 sm:self-center sm:w-full flex justify-center sm:justify-start items-center">
-          <Button
-            onPress={onOpen}
-            color="primary"
-            className="flex-end flex sm:w-4/5 p-2 min-w-[40px] "
-            type="submit"
-          >
-            <span className="hidden sm:inline">Add post</span>
-            <span className="text-xl sm:hidden">
-              <IoCreateOutline />
-            </span>
-          </Button>
-        </li>
-      </ul>
-      <UserControl />
+
+          <div className="sm:self-start sm:w-4/5 flex justify-center sm:justify-start items-center">
+            <Button
+              onPress={onOpen}
+              color="primary"
+              className="hidden sm:flex items-center"
+              fullWidth
+            >
+              <span className="">Add post</span>
+              <span className="text-xl">
+                <IoCreateOutline />
+              </span>
+            </Button>
+            <Button
+              onPress={onOpen}
+              color="primary"
+              className="sm:hidden"
+              fullWidth
+              isIconOnly
+            >
+              <span className="text-xl">
+                <IoCreateOutline />
+              </span>
+            </Button>
+          </div>
+        </div>
+        <UserControl />
+      </nav>
       <Modal
         isOpen={isOpen}
         onClose={onClose}
@@ -85,7 +94,7 @@ const Sidebar = () => {
           </>
         </ModalContent>
       </Modal>
-    </nav>
+    </>
   )
 }
 
