@@ -37,7 +37,7 @@ const Following = () => {
             {isCurrentUser ? `You are ` : `${data.name} is `}
             {`following (${data.followers.length}):`}
           </h2>
-          <div className="min-h-[40px] flex gap-4 flex-wrap justify-center overflow-hidden relative after:text-center after:text-lg after:content-['No_search_results'] after:size-full after:absolute after:left-0 after:top-0 after:z-50 after:hidden empty:after:block">
+          <div className="min-h-[40px] flex gap-4 flex-wrap justify-center overflow-hidden relative after:text-center after:text-lg empty:after:content-['No_search_results'] after:size-full after:absolute after:left-0 after:top-0 ">
             {data.following?.map(
               user =>
                 user.following.name?.toLowerCase().includes(search) && (

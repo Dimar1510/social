@@ -14,6 +14,7 @@ const SearchInput: React.FC<Props> = ({ value, onChange }) => {
       value={value}
       label="Search"
       isClearable
+      onClear={() => onChange("")}
       radius="lg"
       classNames={{
         label: "text-black/50 dark:text-white/90",
@@ -25,8 +26,8 @@ const SearchInput: React.FC<Props> = ({ value, onChange }) => {
         innerWrapper: "bg-transparent",
         inputWrapper: [
           "shadow-xl",
-          "bg-default-200/50",
-          "dark:bg-default/60",
+          "bg-default-100",
+          "dark:bg-default-100",
           "backdrop-blur-xl",
           "backdrop-saturate-200",
           "hover:bg-default-200/70",
