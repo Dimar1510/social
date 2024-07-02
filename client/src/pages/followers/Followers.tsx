@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux"
 import { selectCurrent } from "../../features/userSlice"
 import { Link, useParams } from "react-router-dom"
-import { Card, CardBody } from "@nextui-org/react"
+import { Card, CardBody, Divider } from "@nextui-org/react"
 import User from "../../components/user"
 import { useGetUserByIdQuery } from "../../app/services/userApi"
 import Back from "../../components/ui/back/Back"
@@ -37,24 +37,21 @@ const Followers = () => {
             {isCurrentUser ? `Your ` : `${data.name}'s `}
             {`followers (${data.followers.length}):`}
           </h2>
-          <div className="z-10 min-h-[40px] flex gap-4 flex-wrap justify-center overflow-hidden relative after:text-center after:text-lg empty:after:content-['No_search_results'] after:size-full after:absolute after:left-0 after:top-0 after:-z-10">
+          <div className="z-10 min-h-[40px] flex flex-col justify-center overflow-hidden relative after:text-center after:text-lg empty:after:content-['No_search_results'] after:size-full after:absolute after:left-0 after:top-0 after:-z-10">
             {data.followers?.map(
               user =>
                 user.follower.name?.toLowerCase().includes(search) && (
-                  <Link
-                    to={`/users/${user.follower.id}`}
-                    key={user.follower.id}
-                  >
-                    <Card shadow="sm">
-                      <CardBody className="block">
-                        <User
-                          name={user.follower.name ?? ""}
-                          avatarUrl={user.follower.avatarUrl ?? ""}
-                          description={user.follower.email ?? ""}
-                        />
-                      </CardBody>
-                    </Card>
-                  </Link>
+                  <div key={user.follower.id}>
+                    <Link to={`/users/${user.follower.id}`}>
+                      <User
+                        className="my-6"
+                        name={user.follower.name ?? ""}
+                        avatarUrl={user.follower.avatarUrl ?? ""}
+                        description={user.follower.email ?? ""}
+                      />
+                    </Link>
+                    <Divider />
+                  </div>
                 ),
             )}
           </div>

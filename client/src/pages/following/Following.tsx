@@ -74,18 +74,16 @@ const Following = () => {
                         />
                       </Link>
                       {isCurrentUser && (
-                        <div className="">
-                          <Button
-                            variant="flat"
-                            className="items-center hover:bg-danger-200"
-                            onClick={() =>
-                              handleFollow(user.followingId, data.id)
-                            }
-                            endContent={<MdOutlinePersonAddDisabled />}
-                          >
-                            Unfollow
-                          </Button>
-                        </div>
+                        <Button
+                          variant="flat"
+                          className="items-center hover:bg-danger-200"
+                          onClick={() =>
+                            handleFollow(user.followingId, data.id)
+                          }
+                          endContent={<MdOutlinePersonAddDisabled />}
+                        >
+                          Unfollow
+                        </Button>
                       )}
                     </div>
                     <Divider />
