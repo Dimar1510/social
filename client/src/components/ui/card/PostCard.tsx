@@ -24,7 +24,7 @@ import { selectCurrent } from "../../../features/userSlice"
 import { formatToClientDate } from "../../../utils/format-to-client-date"
 import User from "../../user"
 import { RiDeleteBinLine } from "react-icons/ri"
-import Typography from "../typography"
+import Typography from "../typography/Typography"
 import MetaInfo from "../../meta-info"
 import { FcDislike } from "react-icons/fc"
 import { MdFavorite, MdOutlineFavoriteBorder } from "react-icons/md"
@@ -174,7 +174,7 @@ const Card: React.FC<Props> = ({
           </Tooltip>
         )}
       </CardHeader>
-      <CardBody className="px-3 py-2">
+      <CardBody className="px-3 py-2 ">
         <Typography size="text-md">{content}</Typography>
       </CardBody>
       <CardFooter className="gap-3">

@@ -1,6 +1,6 @@
 import { Outlet, useNavigate } from "react-router-dom"
 import Sidebar from "../Sidebar/Sidebar"
-import Wrapper from "../wrapper"
+import Wrapper from "../wrapper/Wrapper"
 import { useSelector } from "react-redux"
 import { selectIsAuthenticated } from "../../features/userSlice"
 import { useEffect } from "react"

@@ -44,6 +44,7 @@ const Input: React.FC<Props> = ({
       onChange={field.onChange}
       onBlur={field.onBlur}
       errorMessage={`${errors[name]?.message ?? ""}`}
+      maxLength={64}
     />
   )
 }

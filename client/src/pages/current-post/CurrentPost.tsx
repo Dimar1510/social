@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import { useGetPostByIdQuery } from "../../app/services/postApi"
-import Card from "../../components/ui/card"
+import Card from "../../components/ui/card/PostCard"
 import Back from "../../components/ui/back/Back"
 import CreateComment from "../../components/createComment"
 import { useState } from "react"

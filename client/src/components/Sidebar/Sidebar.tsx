@@ -12,7 +12,7 @@ import {
 } from "@nextui-org/react"
 import { Link } from "react-router-dom"
 import { AiOutlineHome } from "react-icons/ai"
-import CreatePost from "../createPost"
+import CreatePost from "../createPost/CreatePost"
 import { useContext } from "react"
 import { ThemeContext } from "../theme-provider"
 
@@ -59,13 +59,13 @@ const Sidebar = () => {
             <Button
               onPress={onOpen}
               color="primary"
-              className="hidden sm:flex items-center"
+              className="hidden sm:flex items-center text-lg"
               fullWidth
             >
-              <span className="">Add post</span>
               <span className="text-xl">
                 <IoCreateOutline />
               </span>
+              <span className="">Add post</span>
             </Button>
             <Button
               onPress={onOpen}

@@ -1,5 +1,5 @@
 import { useGetFeedPostsQuery } from "../../app/services/postApi"
-import Card from "../../components/ui/card"
+import Card from "../../components/ui/card/PostCard"
 
 const Feed = () => {
   const { data } = useGetFeedPostsQuery()

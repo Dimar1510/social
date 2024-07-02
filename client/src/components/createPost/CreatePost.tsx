@@ -55,6 +55,7 @@ const CreatePost: React.FC<Props> = ({ onClose }) => {
             labelPlacement="outside"
             placeholder="What are your thoughts?"
             className="mb-5"
+            maxLength={140}
           />
         )}
       />

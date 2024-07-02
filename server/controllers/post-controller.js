@@ -10,6 +10,9 @@ const PostController = {
     const authorId = req.user.userId;
 
     try {
+      if (content.length > 140) {
+        throw new Error();
+      }
       const post = await prisma.post.create({
         data: {
           content,

@@ -55,10 +55,10 @@ const UserCard: React.FC<Props> = ({ data, userId, onOpen }) => {
           />
           <div className="flex flex-col items-center xs:items-end gap-4">
             <div className="flex flex-col items-center xs:items-end">
-              <div className="text-2xl font-bold text-ellipsis break-words max-w-[300px] text-center xs:text-right">
+              <div className="text-2xl font-bold break-all max-w-[300px] text-center xs:text-right">
                 {data.name}
               </div>
-              <div className="text-lg text-ellipsis break-words ">
+              <div className="text-lg text-ellipsis break-all ">
                 {data.email}
               </div>
             </div>

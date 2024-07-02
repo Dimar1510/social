@@ -1,8 +1,5 @@
 const { prisma } = require("../prisma/prisma-client");
 const bcrypt = require("bcryptjs");
-const Jdenticon = require("jdenticon");
-const path = require("path");
-const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const createError = require("./createError");
 
@@ -15,15 +12,12 @@ const UserController = {
     }
 
     try {
+      email.length > 64 || name.length > 64;
       const existingUser = await prisma.user.findUnique({ where: { email } });
       if (existingUser) {
         return res.status(400).json({ error: "Email already exists" });
       }
       const hashedPassword = await bcrypt.hash(password, 10);
-      // const png = Jdenticon.toPng(name, 200);
-      // const avatarName = `${name}_${Date.now()}.png`;
-      // const avatarPath = path.join(__dirname, "/../uploads", avatarName);
-      // fs.writeFileSync(avatarPath, png);
 
       const user = await prisma.user.create({
         data: {
@@ -146,6 +140,14 @@ const UserController = {
     }
 
     try {
+      if (
+        bio.length > 140 ||
+        location.length > 64 ||
+        email.length > 64 ||
+        name.length > 64
+      ) {
+        throw new Error();
+      }
       if (email) {
         const existingUser = await prisma.user.findFirst({
           where: { email },

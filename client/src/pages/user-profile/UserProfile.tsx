@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux"
 import { resetUser } from "../../features/userSlice"
 import { useEffect } from "react"
 import EditProfile from "../../components/edit-profile/EditProfile"
-import PostCard from "../../components/ui/card"
+import PostCard from "../../components/ui/card/PostCard"
 import UserCard from "./UserCard"
 import Back from "../../components/ui/back/Back"
 
@@ -50,9 +50,7 @@ const UserProfile = () => {
       <Card className="flex-row p-2 mb-6" shadow="sm">
         <Back />
         <div className="flex flex-col">
-          <div className="font-bold max-w-[300px] text-ellipsis break-words">
-            {data.name}
-          </div>
+          <div className="font-bold text-ellipsis break-all">{data.name}</div>
           <div className="text-small text-default-400 flex">
             {postsLength}
             {postsLength === 1 ? " post" : " posts"}

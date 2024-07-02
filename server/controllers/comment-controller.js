@@ -11,6 +11,9 @@ const CommentController = {
     }
 
     try {
+      if (content.length > 140) {
+        throw new Error();
+      }
       const comment = await prisma.comment.create({
         data: {
           content,

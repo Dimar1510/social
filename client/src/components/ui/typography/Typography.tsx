@@ -6,7 +6,7 @@ type Props = {
 }
 
 const Typography: React.FC<Props> = ({ children, size = "text-xl" }) => {
-  return <p className={`${size}`}>{children}</p>
+  return <p className={`${size} break-words`}>{children}</p>
 }
 
 export default Typography
