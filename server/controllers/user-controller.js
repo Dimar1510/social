@@ -141,10 +141,10 @@ const UserController = {
 
     try {
       if (
-        bio.length > 140 ||
-        location.length > 64 ||
-        email.length > 64 ||
-        name.length > 64
+        bio?.length > 140 ||
+        location?.length > 64 ||
+        email?.length > 64 ||
+        name?.length > 64
       ) {
         throw new Error();
       }
