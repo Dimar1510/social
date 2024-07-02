@@ -15,7 +15,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@nextui-org/react": "^2.4.2",
+    "@nextui-org/react": "^0.0.0-canary-20240616172522",
     "@reduxjs/toolkit": "^2.0.1",
     "@types/node": "^20.14.9",
     "framer-motion": "^11.2.12",
