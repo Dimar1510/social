@@ -16,6 +16,7 @@ import Input from "../ui/input"
 import { MdOutlineEmail } from "react-icons/md"
 import ErrorMessage from "../ui/error-message"
 import { hasErrorField } from "../../utils/has-error-field"
+import { RiImageAddLine } from "react-icons/ri"
 
 type Props = {
   isOpen: boolean
@@ -108,7 +109,6 @@ const EditProfile: React.FC<Props> = ({ isOpen, onClose, user }) => {
   }
 
   return (
-    // DIALOG
     <Modal
       isOpen={isOpen}
       onClose={onClose}
@@ -141,9 +141,19 @@ const EditProfile: React.FC<Props> = ({ isOpen, onClose, user }) => {
                 required="Field required"
               />
               <div className="flex justify-between items-center">
+                <label
+                  htmlFor={"avatarUrl"}
+                  className="cursor-pointer flex items-center gap-2 ml-2  p-2 rounded-xl hover:bg-primary"
+                >
+                  <RiImageAddLine />
+                  Upload avatar
+                </label>
+
                 <input
                   type="file"
                   name="avatarUrl"
+                  id="avatarUrl"
+                  className="hidden"
                   required={false}
                   onChange={handleFileUpload}
                 />
@@ -152,6 +162,9 @@ const EditProfile: React.FC<Props> = ({ isOpen, onClose, user }) => {
                     Delete avatar
                   </Button>
                 )}
+              </div>
+              <div className="break-all ml-4">
+                {selectedFile && selectedFile.name}
               </div>
 
               <Input

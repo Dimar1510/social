@@ -40,4 +40,33 @@ function upload(req, res, next) {
   });
 }
 
-module.exports = { upload };
+function uploadPost(req, res, next) {
+  const upload = multer({
+    storage: storage,
+    limits: { fileSize: MAXSIZE },
+    fileFilter: function (req, file, callback) {
+      const ext = path.extname(file.originalname);
+      if (
+        ext !== ".png" &&
+        ext !== ".jpg" &&
+        ext !== ".gif" &&
+        ext !== ".jpeg"
+      ) {
+        return callback(new Error("type"));
+      }
+      callback(null, true);
+    },
+  }).single("postimg");
+
+  upload(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      res.status(500).json({ error: "Maximum file size is 5Mb" });
+    } else if (err) {
+      res.status(500).json({
+        error: err.message === "type" ? "Incorrect file type" : "unknown error",
+      });
+    } else next();
+  });
+}
+
+module.exports = { upload, uploadPost };

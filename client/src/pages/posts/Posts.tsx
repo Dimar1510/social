@@ -21,6 +21,7 @@ const Posts = () => {
               likes,
               likedByUser,
               createdAt,
+              imageUrl,
             }) => (
               <Card
                 key={id}
@@ -34,6 +35,7 @@ const Posts = () => {
                 likedByUser={likedByUser}
                 createdAt={createdAt}
                 cardFor="post"
+                imageUrl={imageUrl}
               />
             ),
           )

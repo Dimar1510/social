@@ -3,6 +3,7 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
+  Image,
   Card as NextCard,
   Spinner,
   Tooltip,
@@ -48,6 +49,7 @@ type Props = {
   id?: string
   cardFor: "comment" | "post" | "current-post" | "user-profile" | "feed"
   likedByUser?: boolean
+  imageUrl?: string
   handleReply?: (name: string) => void
 }
 
@@ -64,6 +66,7 @@ const Card: React.FC<Props> = ({
   cardFor = "post",
   likedByUser = false,
   handleReply,
+  imageUrl,
 }) => {
   const [likePost] = useLikePostMutation()
   const [unlikePost] = useUnlikePostMutation()
@@ -174,8 +177,14 @@ const Card: React.FC<Props> = ({
           </Tooltip>
         )}
       </CardHeader>
-      <CardBody className="px-3 py-2 ">
+      <CardBody className="px-3 py-2 flex flex-col gap-4">
         <Typography size="text-md">{content}</Typography>
+        {imageUrl && (
+          <Image
+            src={`${BASE_URL}${imageUrl}`}
+            className="max-h-[300px] object-cover"
+          />
+        )}
       </CardBody>
       <CardFooter className="gap-3">
         <div className="flex gap-5 items-center ">
@@ -217,7 +226,7 @@ const Card: React.FC<Props> = ({
                                 className="group relative"
                               >
                                 <img
-                                  className="size-8 object-cover"
+                                  className="size-8 object-cover rounded-full"
                                   src={`${BASE_URL}${like.user.avatarUrl}`}
                                 />
                                 <div className="hidden group-hover:flex absolute w-max bg-black/70 px-2 py-1 rounded-md -top-5 z-20">

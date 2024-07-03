@@ -3,8 +3,8 @@ import { api } from "./api"
 
 export const postApi = api.injectEndpoints({
   endpoints: builder => ({
-    createPost: builder.mutation<Post, { content: string }>({
-      query: postData => ({
+    createPost: builder.mutation<Post, { postData: FormData }>({
+      query: ({ postData }) => ({
         url: "/posts",
         method: "POST",
         body: postData,

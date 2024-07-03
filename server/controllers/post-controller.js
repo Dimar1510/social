@@ -7,6 +7,13 @@ const PostController = {
     if (!content) {
       return res.status(400).json({ error: createError().fieldMissing() });
     }
+
+    let filePath;
+
+    if (req.file && req.file.path) {
+      filePath = req.file.path;
+    }
+
     const authorId = req.user.userId;
 
     try {
@@ -17,6 +24,7 @@ const PostController = {
         data: {
           content,
           authorId,
+          imageUrl: filePath ? `/${filePath}` : undefined,
         },
       });
       res.json(post);
