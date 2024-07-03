@@ -2,9 +2,14 @@ import { useParams } from "react-router-dom"
 import { useGetPostByIdQuery } from "../../app/services/postApi"
 import Card from "../../components/ui/card/PostCard"
 import Back from "../../components/ui/back/Back"
-import CreateComment from "../../components/createComment"
-import { useState } from "react"
+import CreateComment from "../../components/createComment/CreateComment"
 import { useForm } from "react-hook-form"
+
+export type Data = {
+  content: string
+  postimg: File
+  postId: string
+}
 
 const CurrentPost = () => {
   const params = useParams<{ id: string }>()
@@ -24,6 +29,7 @@ const CurrentPost = () => {
     likedByUser,
     likes,
     createdAt,
+    imageUrl,
   } = data
 
   const handleReply = (name: string) => {
@@ -46,6 +52,7 @@ const CurrentPost = () => {
         likedByUser={likedByUser}
         createdAt={createdAt}
         handleReply={handleReply}
+        imageUrl={imageUrl}
       />
       <div className="mt-10">
         {data.comments
@@ -62,10 +69,11 @@ const CurrentPost = () => {
                 likes={likes}
                 createdAt={comment.createdAt}
                 handleReply={handleReply}
+                imageUrl={comment.imageUrl}
               />
             ))
           : null}
-      </div>{" "}
+      </div>
       <div className="mt-10">
         <CreateComment form={form} />
       </div>

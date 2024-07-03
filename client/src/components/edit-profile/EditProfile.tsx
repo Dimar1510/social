@@ -75,7 +75,7 @@ const EditProfile: React.FC<Props> = ({ isOpen, onClose, user }) => {
           )
         data.bio && formData.append("bio", data.bio)
         data.location && formData.append("location", data.location)
-        selectedFile && formData.append("avatar", selectedFile)
+        selectedFile && formData.append("image", selectedFile)
         await updateUser({ userData: formData, id }).unwrap()
         onClose()
       } catch (error) {

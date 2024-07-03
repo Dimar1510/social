@@ -36,7 +36,7 @@ export type Post = {
   likedByUser: boolean
   createdAt: Date
   updatedAt: Date
-  imageUrl: string
+  imageUrl?: string
 }
 
 export type Like = {
@@ -55,4 +55,5 @@ export type Comment = {
   post: Post
   postId: string
   createdAt: Date
+  imageUrl?: string
 }

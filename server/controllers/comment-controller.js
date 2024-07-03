@@ -5,9 +5,16 @@ const CommentController = {
   createComment: async (req, res) => {
     const { content, postId } = req.body;
     const userId = req.user.userId;
-
+    console.log(req.file);
+    console.log(req.body);
     if (!content || !postId) {
       return res.status(400).json({ error: createError().fieldMissing() });
+    }
+
+    let filePath;
+
+    if (req.file && req.file.path) {
+      filePath = req.file.path;
     }
 
     try {
@@ -19,6 +26,7 @@ const CommentController = {
           content,
           userId,
           postId,
+          imageUrl: filePath ? `/${filePath}` : undefined,
         },
       });
       res.json(comment);

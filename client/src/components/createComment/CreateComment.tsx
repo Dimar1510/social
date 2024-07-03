@@ -1,32 +1,30 @@
-import {
-  useCreatePostMutation,
-  useLazyGetAllPostsQuery,
-} from "../../app/services/postApi"
-import { Controller, useForm } from "react-hook-form"
+import { useLazyGetPostByIdQuery } from "../../app/services/postApi"
+import { Controller, UseFormReturn } from "react-hook-form"
 import { Button, Textarea, Tooltip } from "@nextui-org/react"
 import ErrorMessage from "../ui/error-message"
 
-import { useRef, useState } from "react"
+import { useParams } from "react-router-dom"
+import { useCreateCommentMutation } from "../../app/services/commentApi"
+import React, { useRef, useState } from "react"
 import { RiImageAddLine } from "react-icons/ri"
 
-type Data = {
-  content: string
+type Props = {
+  form: UseFormReturn
 }
 
-const CreatePost = () => {
-  const [createPost] = useCreatePostMutation()
-  const [triggerGetAllPosts] = useLazyGetAllPostsQuery()
-
+const CreateComment: React.FC<Props> = ({ form }) => {
+  const { id } = useParams<{ id: string }>()
+  const [createComment] = useCreateCommentMutation()
+  const [getPostById] = useLazyGetPostByIdQuery()
+  const [error, setError] = useState("")
   const {
     handleSubmit,
     control,
     formState: { errors },
     reset,
-  } = useForm<Data>()
-
-  const inputFile = useRef<HTMLInputElement>(null)
+  } = form
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const [error, setError] = useState("")
+  const inputFile = useRef<HTMLInputElement>(null)
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files !== null) {
@@ -45,29 +43,29 @@ const CreatePost = () => {
     }
   }
 
-  const onSubmit = async (data: Data) => {
+  const onSubmit = handleSubmit(async data => {
     try {
-      const formData = new FormData()
-      formData.append("content", data.content)
-      selectedFile && formData.append("image", selectedFile)
-      await createPost({ postData: formData }).unwrap()
-      await triggerGetAllPosts().unwrap()
-      setSelectedFile(null)
-      reset()
-      if (inputFile.current) inputFile.current.value = ""
-      setError("")
+      if (id) {
+        const formData = new FormData()
+        formData.append("content", data.comment)
+        formData.append("postId", id)
+        selectedFile && formData.append("image", selectedFile)
+        await createComment({ commentData: formData }).unwrap()
+        await getPostById(id).unwrap()
+        setSelectedFile(null)
+        reset()
+        if (inputFile.current) inputFile.current.value = ""
+        setError("")
+      }
     } catch (error) {
       console.log(error)
     }
-  }
+  })
 
   return (
-    <form
-      className="flex-grow flex flex-col gap-4"
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <form className="flex-grow" onSubmit={onSubmit}>
       <Controller
-        name="content"
+        name="comment"
         control={control}
         defaultValue=""
         rules={{ required: "Field required" }}
@@ -75,14 +73,14 @@ const CreatePost = () => {
           <Textarea
             {...field}
             labelPlacement="outside"
-            placeholder="What are your thoughts?"
-            maxLength={140}
+            placeholder="Leave a comment"
+            className="mb-5"
           />
         )}
       />
       <div className="flex gap-4 items-center flex-wrap">
         <Button color="primary" className="" type="submit">
-          Add post
+          Add comment
         </Button>
         <Tooltip
           closeDelay={50}
@@ -113,4 +111,4 @@ const CreatePost = () => {
   )
 }
 
-export default CreatePost
+export default CreateComment

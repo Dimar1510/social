@@ -8,7 +8,7 @@ const {
   LikeController,
   FollowController,
 } = require("../controllers");
-const { upload, uploadPost } = require("../middleware/upload");
+const { upload } = require("../middleware/upload");
 
 router.post("/register", UserController.register);
 router.post("/login", UserController.login);
@@ -16,13 +16,18 @@ router.get("/current", authenticateToken, UserController.current);
 router.get("/users/:id", authenticateToken, UserController.getUserById);
 router.put("/users/:id", authenticateToken, upload, UserController.updateUser);
 
-router.post("/posts", authenticateToken, uploadPost, PostController.createPost);
+router.post("/posts", authenticateToken, upload, PostController.createPost);
 router.get("/posts", authenticateToken, PostController.getAllPosts);
 router.get("/posts/feed", authenticateToken, PostController.getFeedPosts);
 router.get("/posts/:id", authenticateToken, PostController.getPostById);
 router.delete("/posts/:id", authenticateToken, PostController.deletePost);
 
-router.post("/comments", authenticateToken, CommentController.createComment);
+router.post(
+  "/comments",
+  authenticateToken,
+  upload,
+  CommentController.createComment
+);
 router.delete(
   "/comments/:id",
   authenticateToken,

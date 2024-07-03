@@ -159,7 +159,6 @@ const UserController = {
       }
 
       if (deleteAvatar) filePath = "uploads/profile.png";
-      console.log(filePath);
       const user = await prisma.user.update({
         where: { id },
         data: {
