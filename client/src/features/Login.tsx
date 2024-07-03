@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react"
 import { useForm } from "react-hook-form"
-import Input from "../components/ui/input"
+import Input from "../components/ui/input/Input"
 import {
   Button,
   Modal,
@@ -10,7 +10,7 @@ import {
 } from "@nextui-org/react"
 import { useLazyCurrentQuery, useLoginMutation } from "../app/services/userApi"
 import { useNavigate } from "react-router-dom"
-import ErrorMessage from "../components/ui/error-message"
+import ErrorMessage from "../components/ui/error-message/ErrorMessage"
 import { hasErrorField } from "../utils/has-error-field"
 import { ThemeContext } from "../components/theme-provider"
 

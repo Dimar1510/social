@@ -3,57 +3,11 @@ import { createRoot } from "react-dom/client"
 import { Provider } from "react-redux"
 import { store } from "./app/store"
 import "./index.css"
-import { NextUIProvider } from "@nextui-org/react"
-import {
-  BrowserRouter,
-  RouterProvider,
-  createBrowserRouter,
-} from "react-router-dom"
-import ThemeProvider from "./components/theme-provider"
-import Auth from "./pages/auth/Auth"
-import Layout from "./components/layout/Layout"
-import Posts from "./pages/posts/Posts"
-import CurrentPost from "./pages/current-post/CurrentPost"
-import UserProfile from "./pages/user-profile/UserProfile"
-import Followers from "./pages/followers/Followers"
-import Following from "./pages/following/Following"
+import { BrowserRouter } from "react-router-dom"
 import AuthGuard from "./features/AuthGuard"
 import App from "./App"
 
 const container = document.getElementById("root")
-
-const router = createBrowserRouter([
-  {
-    path: "/auth",
-    element: <Auth />,
-  },
-  {
-    path: "/",
-    element: <Layout />,
-    children: [
-      {
-        path: "",
-        element: <Posts />,
-      },
-      {
-        path: "posts/:id",
-        element: <CurrentPost />,
-      },
-      {
-        path: "users/:id",
-        element: <UserProfile />,
-      },
-      {
-        path: "followers/:id",
-        element: <Followers />,
-      },
-      {
-        path: "following/:id",
-        element: <Following />,
-      },
-    ],
-  },
-])
 
 if (container) {
   const root = createRoot(container)

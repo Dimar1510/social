@@ -2,7 +2,7 @@ import { useSelector } from "react-redux"
 import { selectCurrent } from "../../features/userSlice"
 import { Link, useParams } from "react-router-dom"
 import { Button, Card, CardBody, Divider } from "@nextui-org/react"
-import User from "../../components/user"
+import User from "../../components/user/User"
 import {
   useGetUserByIdQuery,
   useLazyGetUserByIdQuery,

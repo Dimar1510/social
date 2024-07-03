@@ -1,8 +1,8 @@
 import { useLazyGetPostByIdQuery } from "../../app/services/postApi"
 import { Controller, UseFormReturn } from "react-hook-form"
 import { Button, Textarea, Tooltip } from "@nextui-org/react"
-import ErrorMessage from "../ui/error-message"
-
+import ErrorMessage from "../ui/error-message/ErrorMessage"
+import { handleFileUpload } from "../../utils/handle-file-upload"
 import { useParams } from "react-router-dom"
 import { useCreateCommentMutation } from "../../app/services/commentApi"
 import React, { useRef, useState } from "react"
@@ -25,23 +25,6 @@ const CreateComment: React.FC<Props> = ({ form }) => {
   } = form
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const inputFile = useRef<HTMLInputElement>(null)
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files !== null) {
-      const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i
-
-      if (e.target.files[0].size > 5 * 1048576) {
-        setError("Maximum file size is 5Mb")
-        e.target.value = ""
-      } else if (!allowedExtensions.exec(e.target.value)) {
-        setError("Invalid file type")
-        e.target.value = ""
-      } else {
-        setError("")
-        setSelectedFile(e.target.files[0])
-      }
-    }
-  }
 
   const onSubmit = handleSubmit(async data => {
     try {
@@ -102,7 +85,7 @@ const CreateComment: React.FC<Props> = ({ form }) => {
           className="hidden"
           ref={inputFile}
           required={false}
-          onChange={handleFileUpload}
+          onChange={e => handleFileUpload(e, setError, setSelectedFile)}
         />
         <div className="break-all">{selectedFile && selectedFile.name}</div>
       </div>

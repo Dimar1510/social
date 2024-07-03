@@ -4,8 +4,8 @@ import {
 } from "../../app/services/postApi"
 import { Controller, useForm } from "react-hook-form"
 import { Button, Textarea, Tooltip } from "@nextui-org/react"
-import ErrorMessage from "../ui/error-message"
-
+import ErrorMessage from "../ui/error-message/ErrorMessage"
+import { handleFileUpload } from "../../utils/handle-file-upload"
 import { useRef, useState } from "react"
 import { RiImageAddLine } from "react-icons/ri"
 
@@ -13,7 +13,11 @@ type Data = {
   content: string
 }
 
-const CreatePost = () => {
+type Props = {
+  onClose?: () => void
+}
+
+const CreatePost: React.FC<Props> = ({ onClose }) => {
   const [createPost] = useCreatePostMutation()
   const [triggerGetAllPosts] = useLazyGetAllPostsQuery()
 
@@ -28,23 +32,6 @@ const CreatePost = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [error, setError] = useState("")
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files !== null) {
-      const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i
-
-      if (e.target.files[0].size > 5 * 1048576) {
-        setError("Maximum file size is 5Mb")
-        e.target.value = ""
-      } else if (!allowedExtensions.exec(e.target.value)) {
-        setError("Invalid file type")
-        e.target.value = ""
-      } else {
-        setError("")
-        setSelectedFile(e.target.files[0])
-      }
-    }
-  }
-
   const onSubmit = async (data: Data) => {
     try {
       const formData = new FormData()
@@ -56,6 +43,7 @@ const CreatePost = () => {
       reset()
       if (inputFile.current) inputFile.current.value = ""
       setError("")
+      if (onClose) onClose()
     } catch (error) {
       console.log(error)
     }
@@ -104,7 +92,7 @@ const CreatePost = () => {
           className="hidden"
           ref={inputFile}
           required={false}
-          onChange={handleFileUpload}
+          onChange={e => handleFileUpload(e, setError, setSelectedFile)}
         />
         <div className="break-all">{selectedFile && selectedFile.name}</div>
       </div>

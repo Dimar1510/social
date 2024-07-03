@@ -5,7 +5,6 @@ import {
 } from "react-icons/md"
 import { CiEdit } from "react-icons/ci"
 import { User } from "../../app/types"
-import { Link } from "react-router-dom"
 import { Link as NextLink } from "@nextui-org/react"
 
 type Props = {

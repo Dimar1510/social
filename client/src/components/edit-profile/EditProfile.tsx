@@ -12,9 +12,9 @@ import {
   ModalHeader,
   Textarea,
 } from "@nextui-org/react"
-import Input from "../ui/input"
+import Input from "../ui/input/Input"
 import { MdOutlineEmail } from "react-icons/md"
-import ErrorMessage from "../ui/error-message"
+import ErrorMessage from "../ui/error-message/ErrorMessage"
 import { hasErrorField } from "../../utils/has-error-field"
 import { RiImageAddLine } from "react-icons/ri"
 
@@ -129,7 +129,6 @@ const EditProfile: React.FC<Props> = ({ isOpen, onClose, user }) => {
                 name="email"
                 label="Email"
                 type="email"
-                endContent={<MdOutlineEmail />}
                 required="Field required"
               />
               <Input
@@ -137,7 +136,6 @@ const EditProfile: React.FC<Props> = ({ isOpen, onClose, user }) => {
                 name="name"
                 label="Name"
                 type="text"
-                endContent={<MdOutlineEmail />}
                 required="Field required"
               />
               <div className="flex justify-between items-center">

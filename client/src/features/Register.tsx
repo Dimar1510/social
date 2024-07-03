@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react"
-import Input from "../components/ui/input"
+import Input from "../components/ui/input/Input"
 import { useForm } from "react-hook-form"
 import {
   Button,
@@ -14,7 +14,7 @@ import {
   useRegisterMutation,
 } from "../app/services/userApi"
 import { hasErrorField } from "../utils/has-error-field"
-import ErrorMessage from "../components/ui/error-message"
+import ErrorMessage from "../components/ui/error-message/ErrorMessage"
 import { ThemeContext } from "../components/theme-provider"
 import { useNavigate } from "react-router-dom"
 

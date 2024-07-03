@@ -65,7 +65,7 @@ const Sidebar = () => {
               <span className="text-xl">
                 <IoCreateOutline />
               </span>
-              <span className="">Add post</span>
+              <span className="text-medium">Add post</span>
             </Button>
             <Button
               onPress={onOpen}
