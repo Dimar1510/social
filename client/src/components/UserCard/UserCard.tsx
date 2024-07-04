@@ -1,21 +1,27 @@
-import { useLazyGetUserByIdQuery } from "../../app/services/userApi"
-import { Card, CardBody, CardHeader, Image } from "@nextui-org/react"
-import { useSelector } from "react-redux"
-import { selectCurrent } from "../../features/userSlice"
 import {
-  useFollowUserMutation,
-  useUnfollowUserMutation,
-} from "../../app/services/followApi"
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Image,
+  Switch,
+} from "@nextui-org/react"
+import { useDispatch, useSelector } from "react-redux"
+import { logout, selectCurrent } from "../../features/userSlice"
 import { BASE_URL } from "../../constants"
-import { CiLocationOn } from "react-icons/ci"
+import { CiLocationOn, CiLogout } from "react-icons/ci"
 import { formatToClientDay } from "../../utils/format-to-client-day"
-import { FaBirthdayCake } from "react-icons/fa"
+import { FaBirthdayCake, FaRegMoon } from "react-icons/fa"
 import { BsCalendar3 } from "react-icons/bs"
 import { IoCheckmarkOutline } from "react-icons/io5"
 import { User } from "../../app/types"
 import ProfileItem from "../ProfileItem/ProfileItem"
 import ButtonGroup from "../ButtonGroup/ButtonGroup"
 import defaultProfileAvatar from "../../assets/images/profile.png"
+import { LuSunMedium } from "react-icons/lu"
+import { useNavigate } from "react-router-dom"
+import { useContext } from "react"
+import { ThemeContext } from "../theme-provider"
 
 type Props = {
   data: User
@@ -26,12 +32,18 @@ type Props = {
 
 const UserCard: React.FC<Props> = ({ data, userId, onOpen }) => {
   const currentUser = useSelector(selectCurrent)
-  const [followUser] = useFollowUserMutation()
-  const [unfollowUser] = useUnfollowUserMutation()
-  const [triggerGetUserByIdQuery] = useLazyGetUserByIdQuery()
-
   const isCurrentUser = currentUser?.id === userId
+  const { theme, toggleTheme } = useContext(ThemeContext)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
+  const handleLogout = () => {
+    dispatch(logout())
+    localStorage.removeItem("token")
+    navigate("/auth")
+  }
+
+  const themeSelected = theme === "light"
   return (
     <>
       <Card className="p-3" shadow="sm">
@@ -103,6 +115,28 @@ const UserCard: React.FC<Props> = ({ data, userId, onOpen }) => {
               </div>
             </li>
           </ul>
+          {isCurrentUser && (
+            <div className="flex-row-reverse flex justify-between">
+              <Button
+                color="default"
+                variant="flat"
+                className=""
+                onClick={handleLogout}
+              >
+                <CiLogout />
+                <span className="">Logout</span>
+              </Button>
+
+              <Switch
+                isSelected={!themeSelected}
+                size="md"
+                onValueChange={toggleTheme}
+                endContent={<LuSunMedium />}
+                startContent={<FaRegMoon />}
+                className=""
+              ></Switch>
+            </div>
+          )}
         </CardBody>
       </Card>
     </>

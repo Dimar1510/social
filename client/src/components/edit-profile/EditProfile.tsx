@@ -13,7 +13,6 @@ import {
   Textarea,
 } from "@nextui-org/react"
 import Input from "../ui/input/Input"
-import { MdOutlineEmail } from "react-icons/md"
 import ErrorMessage from "../ui/error-message/ErrorMessage"
 import { hasErrorField } from "../../utils/has-error-field"
 import { RiImageAddLine } from "react-icons/ri"
@@ -127,23 +126,25 @@ const EditProfile: React.FC<Props> = ({
           </ModalHeader>
           <ModalBody>
             <form
-              className="flex flex-col gap-4"
+              className="flex flex-col gap-4 short:gap-1"
               onSubmit={handleSubmit(onSubmit)}
             >
-              <Input
-                control={control}
-                name="email"
-                label="Email"
-                type="email"
-                required="Field required"
-              />
-              <Input
-                control={control}
-                name="name"
-                label="Name"
-                type="text"
-                required="Field required"
-              />
+              <div className="flex flex-col gap-4 short:flex-row">
+                <Input
+                  control={control}
+                  name="email"
+                  label="Email"
+                  type="email"
+                  required="Field required"
+                />
+                <Input
+                  control={control}
+                  name="name"
+                  label="Name"
+                  type="text"
+                  required="Field required"
+                />
+              </div>
               <div className="flex justify-between items-center">
                 <label
                   htmlFor={"avatarUrl"}

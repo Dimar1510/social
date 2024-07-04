@@ -10,6 +10,7 @@ import UserProfile from "./pages/user-profile/UserProfile"
 import Followers from "./pages/followers/Followers"
 import Following from "./pages/following/Following"
 import Feed from "./pages/feed/Feed"
+import ErrorPage from "./pages/404/ErrorPage"
 
 const App = () => {
   const navigate = useNavigate()
@@ -17,6 +18,7 @@ const App = () => {
     <NextUIProvider navigate={navigate}>
       <ThemeProvider>
         <Routes>
+          <Route path="*" element={<ErrorPage />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/" element={<Layout />}>
             <Route path="" element={<Posts />} />

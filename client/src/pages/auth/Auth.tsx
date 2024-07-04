@@ -29,19 +29,19 @@ const Auth = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center h-screen">
-        <div className="flex-1 flex w-full max-w-[1200px] justify-center items-center gap-8 p-8">
+        <div className="flex-1 flex w-full max-w-[1200px] justify-center items-center gap-8 p-8 short:p-2">
           <div className="text-clampLogo hidden sm:block">
             <GiBirdTwitter />
           </div>
 
           <div className="flex flex-col items-center sm:items-start gap-4">
-            <h1 className="text-4xl sm:text-6xl uppercase flex gap-2">
+            <h1 className="text-4xl sm:text-6xl uppercase flex gap-2 short:hidden">
               <span className="sm:hidden">
                 <GiBirdTwitter />
               </span>
               Chirickter
             </h1>
-            <h2 className="text-2xl sm:text-4xl mb-8 text-center sm:text-start">
+            <h2 className="text-2xl sm:text-4xl mb-8 text-center sm:text-start short:hidden">
               Digital communication platform
             </h2>
             <p className="text-xl font-semibold">Join today</p>
