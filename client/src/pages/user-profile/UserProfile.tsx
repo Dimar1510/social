@@ -5,8 +5,8 @@ import {
   useLazyGetUserByIdQuery,
 } from "../../app/services/userApi"
 import { Card, Spinner, useDisclosure } from "@nextui-org/react"
-import { useDispatch } from "react-redux"
-import { resetUser } from "../../features/userSlice"
+import { useDispatch, useSelector } from "react-redux"
+import { resetUser, selectCurrent, selectUser } from "../../features/userSlice"
 import { useEffect } from "react"
 import EditProfile from "../../components/edit-profile/EditProfile"
 import PostCard from "../../components/ui/card/PostCard"
@@ -19,7 +19,7 @@ const UserProfile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [triggerGetUserByIdQuery] = useLazyGetUserByIdQuery()
   const [triggerCurrentQuery] = useLazyCurrentQuery()
-
+  const currentUser = useSelector(selectCurrent)
   const dispatch = useDispatch()
 
   useEffect(
@@ -68,7 +68,7 @@ const UserProfile = () => {
         isOpen={isOpen}
         handleUpdate={handleUpdate}
         onClose={onClose}
-        user={data}
+        user={currentUser}
       />
       <div className="mt-6">
         {data.userPosts && data.userPosts.length > 0
