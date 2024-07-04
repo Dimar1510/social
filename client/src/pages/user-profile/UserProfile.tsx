@@ -4,18 +4,18 @@ import {
   useLazyCurrentQuery,
   useLazyGetUserByIdQuery,
 } from "../../app/services/userApi"
-import { Card, useDisclosure } from "@nextui-org/react"
+import { Card, Spinner, useDisclosure } from "@nextui-org/react"
 import { useDispatch } from "react-redux"
 import { resetUser } from "../../features/userSlice"
 import { useEffect } from "react"
 import EditProfile from "../../components/edit-profile/EditProfile"
 import PostCard from "../../components/ui/card/PostCard"
-import UserCard from "./UserCard"
+import UserCard from "../../components/UserCard/UserCard"
 import Back from "../../components/ui/back/Back"
 
 const UserProfile = () => {
   const params = useParams<{ id: string }>()
-  const { data } = useGetUserByIdQuery(params?.id ?? "")
+  const { data, isLoading } = useGetUserByIdQuery(params?.id ?? "")
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [triggerGetUserByIdQuery] = useLazyGetUserByIdQuery()
   const [triggerCurrentQuery] = useLazyCurrentQuery()
@@ -29,22 +29,27 @@ const UserProfile = () => {
     [],
   )
 
-  if (!data) {
-    return <h2>User not found</h2>
+  if (!data || isLoading) {
+    return (
+      <div className="mt-[50%] flex justify-center">
+        <Spinner className="scale-[2]" />
+      </div>
+    )
   }
 
-  const handleClose = async () => {
+  const handleUpdate = async () => {
     try {
       if (params?.id) {
+        onClose()
         await triggerGetUserByIdQuery(params?.id)
         await triggerCurrentQuery()
-        onClose()
       }
     } catch (error) {
       console.error(error)
     }
   }
   const postsLength = data.userPosts.length
+
   return (
     <>
       <Card className="flex-row p-2 mb-6" shadow="sm">
@@ -59,7 +64,12 @@ const UserProfile = () => {
       </Card>
       <UserCard data={data} onOpen={onOpen} userId={params?.id} />
 
-      <EditProfile isOpen={isOpen} onClose={handleClose} user={data} />
+      <EditProfile
+        isOpen={isOpen}
+        handleUpdate={handleUpdate}
+        onClose={onClose}
+        user={data}
+      />
       <div className="mt-6">
         {data.userPosts && data.userPosts.length > 0
           ? data.userPosts.map(

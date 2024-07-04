@@ -1,5 +1,5 @@
 import { Spinner, Tooltip } from "@nextui-org/react"
-import React from "react"
+import React, { useState } from "react"
 import { RiDeleteBinLine } from "react-icons/ri"
 import { useDeletePostMutation } from "../../../app/services/postApi"
 import { useDeleteCommentMutation } from "../../../app/services/commentApi"
@@ -24,8 +24,10 @@ const DeleteButton: React.FC<Props> = ({
   const [deletePost, deletePostStatus] = useDeletePostMutation()
   const [deleteComment, deleteCommentStatus] = useDeleteCommentMutation()
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
 
   const handleDelete = async () => {
+    setLoading(true)
     try {
       switch (cardFor) {
         case "user-profile":
@@ -53,6 +55,7 @@ const DeleteButton: React.FC<Props> = ({
       } else {
         setError(error as string)
       }
+      setLoading(false)
     }
   }
   return (
@@ -62,12 +65,8 @@ const DeleteButton: React.FC<Props> = ({
       placement="bottom-end"
       content={`Delete this ${cardFor === "comment" ? "comment" : "post"}`}
     >
-      <button className="cursor-pointer" onClick={handleDelete}>
-        {deletePostStatus.isLoading || deleteCommentStatus.isLoading ? (
-          <Spinner />
-        ) : (
-          <RiDeleteBinLine />
-        )}
+      <button disabled={loading} onClick={handleDelete}>
+        {loading ? <Spinner size="sm" /> : <RiDeleteBinLine />}
       </button>
     </Tooltip>
   )

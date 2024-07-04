@@ -41,7 +41,7 @@ const Auth = () => {
               </span>
               Chirickter
             </h1>
-            <h2 className="text-2xl sm:text-4xl mb-8 text-center">
+            <h2 className="text-2xl sm:text-4xl mb-8 text-center sm:text-start">
               Digital communication platform
             </h2>
             <p className="text-xl font-semibold">Join today</p>

@@ -13,8 +13,9 @@ import { FaBirthdayCake } from "react-icons/fa"
 import { BsCalendar3 } from "react-icons/bs"
 import { IoCheckmarkOutline } from "react-icons/io5"
 import { User } from "../../app/types"
-import ProfileItem from "./ProfileItem"
-import ButtonGroup from "./ButtonGroup"
+import ProfileItem from "../ProfileItem/ProfileItem"
+import ButtonGroup from "../ButtonGroup/ButtonGroup"
+import defaultProfileAvatar from "../../assets/images/profile.png"
 
 type Props = {
   data: User
@@ -29,17 +30,6 @@ const UserCard: React.FC<Props> = ({ data, userId, onOpen }) => {
   const [unfollowUser] = useUnfollowUserMutation()
   const [triggerGetUserByIdQuery] = useLazyGetUserByIdQuery()
 
-  const handleFollow = async () => {
-    try {
-      if (userId) {
-        data.isFollowing
-          ? await unfollowUser(userId).unwrap()
-          : await followUser({ followingId: userId }).unwrap()
-        await triggerGetUserByIdQuery(userId)
-      }
-    } catch (error) {}
-  }
-
   const isCurrentUser = currentUser?.id === userId
 
   return (
@@ -47,7 +37,11 @@ const UserCard: React.FC<Props> = ({ data, userId, onOpen }) => {
       <Card className="p-3" shadow="sm">
         <CardHeader className="flex justify-between items-center xs:items-start flex-col xs:flex-row">
           <Image
-            src={`${BASE_URL}${data.avatarUrl}`}
+            src={
+              data.avatarUrl
+                ? `${BASE_URL}${data.avatarUrl}`
+                : defaultProfileAvatar
+            }
             alt={data.name}
             width={200}
             height={200}
@@ -64,9 +58,9 @@ const UserCard: React.FC<Props> = ({ data, userId, onOpen }) => {
             </div>
             <ButtonGroup
               data={data}
-              handleFollow={handleFollow}
               onOpen={onOpen}
               isCurrentUser={isCurrentUser}
+              userId={userId}
             />
           </div>
         </CardHeader>

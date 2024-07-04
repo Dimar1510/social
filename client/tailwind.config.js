@@ -30,12 +30,14 @@ export default {
             content1: "#242524",
             primary: "#00ADB5",
             background: "#1A1B1A",
+            secondary: "#f91880",
           },
         },
         light: {
           colors: {
             primary: "#ff8c00",
             background: "#EFEFEF",
+            secondary: "#f91880",
           },
         },
       },

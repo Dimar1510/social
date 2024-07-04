@@ -6,20 +6,48 @@ import {
 import { CiEdit } from "react-icons/ci"
 import { User } from "../../app/types"
 import { Link as NextLink } from "@nextui-org/react"
+import {
+  useFollowUserMutation,
+  useUnfollowUserMutation,
+} from "../../app/services/followApi"
+import { useLazyGetUserByIdQuery } from "../../app/services/userApi"
+import { useState } from "react"
 
 type Props = {
   data: User
-  handleFollow: () => void
   isCurrentUser: boolean
   onOpen: () => void
+  userId?: string
 }
 
 const ButtonGroup: React.FC<Props> = ({
-  data,
   isCurrentUser,
-  handleFollow,
   onOpen,
+  userId,
+  data,
 }) => {
+  const [followUser] = useFollowUserMutation()
+  const [unfollowUser] = useUnfollowUserMutation()
+  const [triggerGetUserByIdQuery] = useLazyGetUserByIdQuery()
+  const [loading, setLoading] = useState(false)
+
+  if (!data) return null
+
+  const handleFollow = async () => {
+    setLoading(true)
+    try {
+      if (userId) {
+        data.isFollowing
+          ? await unfollowUser(userId).unwrap()
+          : await followUser({ followingId: userId }).unwrap()
+        await triggerGetUserByIdQuery(userId)
+        setLoading(false)
+      }
+    } catch (error) {
+      setLoading(false)
+    }
+  }
+
   return (
     <>
       <div className="flex flex-col gap-4">
@@ -31,6 +59,7 @@ const ButtonGroup: React.FC<Props> = ({
               variant="flat"
               className="gap-2 items-center hidden group-hover:flex"
               onClick={handleFollow}
+              isLoading={loading}
               endContent={
                 data.isFollowing ? (
                   <MdOutlinePersonAddDisabled />
@@ -41,7 +70,11 @@ const ButtonGroup: React.FC<Props> = ({
             >
               {data.isFollowing ? "Unfollow" : "Follow"}
             </Button>
-            <Button fullWidth className="group-hover:hidden ">
+            <Button
+              isLoading={loading}
+              fullWidth
+              className="group-hover:hidden "
+            >
               {data.isFollowing ? "Following" : "Not following"}
             </Button>
           </div>

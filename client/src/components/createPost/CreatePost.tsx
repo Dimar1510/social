@@ -18,8 +18,8 @@ type Props = {
 }
 
 const CreatePost: React.FC<Props> = ({ onClose }) => {
-  const [createPost] = useCreatePostMutation()
-  const [triggerGetAllPosts] = useLazyGetAllPostsQuery()
+  const [createPost, { isLoading: createLoading }] = useCreatePostMutation()
+  const [triggerGetAllPosts, { isFetching }] = useLazyGetAllPostsQuery()
 
   const {
     handleSubmit,
@@ -68,34 +68,48 @@ const CreatePost: React.FC<Props> = ({ onClose }) => {
           />
         )}
       />
+
       <div className="flex gap-4 items-center flex-wrap">
-        <Button color="primary" className="" type="submit">
+        <Button
+          isLoading={isFetching || createLoading}
+          color="primary"
+          className=""
+          type="submit"
+        >
           Add post
         </Button>
-        <Tooltip
-          closeDelay={50}
-          classNames={{ content: ["bg-default-600/80 text-default-100"] }}
-          placement="bottom-start"
-          content={`Attach image`}
-        >
-          <label
-            htmlFor={"postimg"}
-            className="cursor-pointer text-2xl hover:text-primary"
-          >
-            <RiImageAddLine />
-          </label>
-        </Tooltip>
-        <input
-          type="file"
-          name="postimg"
-          id="postimg"
-          className="hidden"
-          ref={inputFile}
-          required={false}
-          onChange={e => handleFileUpload(e, setError, setSelectedFile)}
-        />
-        <div className="break-all">{selectedFile && selectedFile.name}</div>
+
+        {!isFetching && !createLoading && (
+          <>
+            <Tooltip
+              closeDelay={50}
+              classNames={{ content: ["bg-default-600/80 text-default-100"] }}
+              placement="bottom-start"
+              content={`Attach image`}
+            >
+              <label
+                htmlFor={"postimg"}
+                className="cursor-pointer text-2xl hover:text-primary"
+              >
+                <RiImageAddLine />
+              </label>
+            </Tooltip>
+
+            <input
+              type="file"
+              name="postimg"
+              id="postimg"
+              className="hidden"
+              ref={inputFile}
+              required={false}
+              onChange={e => handleFileUpload(e, setError, setSelectedFile)}
+            />
+
+            <div className="break-all">{selectedFile && selectedFile.name}</div>
+          </>
+        )}
       </div>
+
       {errors && <ErrorMessage error={error} />}
     </form>
   )

@@ -5,6 +5,7 @@ import {
   CardHeader,
   Image,
   Card as NextCard,
+  Spinner,
 } from "@nextui-org/react"
 import {
   useLazyGetAllPostsQuery,
@@ -120,7 +121,10 @@ const Card: React.FC<Props> = ({
         <div className="flex gap-5 items-center ">
           {cardFor !== "comment" && (
             <>
-              <CommentButton commentsCount={commentsCount} id={id} />
+              {cardFor !== "current-post" && (
+                <CommentButton commentsCount={commentsCount} id={id} />
+              )}
+
               <LikeButton
                 likes={likes}
                 likedByUser={likedByUser}

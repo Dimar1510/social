@@ -11,6 +11,7 @@ import { LuSunMedium } from "react-icons/lu"
 import { logout, selectIsAuthenticated } from "../../features/userSlice"
 import { CiLogout } from "react-icons/ci"
 import { BASE_URL } from "../../constants"
+import defaultProfileAvatar from "../../assets/images/profile.png"
 
 const UserControl = () => {
   const current = useSelector(selectCurrent)
@@ -47,7 +48,11 @@ const UserControl = () => {
             <NextUser
               name={""}
               description={""}
-              avatarProps={{ src: `${BASE_URL}${avatarUrl}` }}
+              avatarProps={{
+                src: avatarUrl
+                  ? `${BASE_URL}${avatarUrl}`
+                  : defaultProfileAvatar,
+              }}
               className="sm:hidden"
             />
           </CardBody>

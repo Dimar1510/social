@@ -1,5 +1,5 @@
-import { Tooltip } from "@nextui-org/react"
-import React from "react"
+import { Spinner, Tooltip } from "@nextui-org/react"
+import React, { useState } from "react"
 import { Link } from "react-router-dom"
 import MetaInfo from "../../meta-info/MetaInfo"
 import { MdFavorite, MdOutlineFavoriteBorder } from "react-icons/md"
@@ -10,11 +10,13 @@ import {
   useUnlikePostMutation,
 } from "../../../app/services/likeApi"
 import { hasErrorField } from "../../../utils/has-error-field"
+import defaultProfileAvatar from "../../../assets/images/profile.png"
+import { useLazyGetPostByIdQuery } from "../../../app/services/postApi"
 
 type Props = {
   likes: Like[]
   likedByUser: boolean
-  refetchPosts: () => void
+  refetchPosts: () => Promise<void>
   id: string
   setError: (error: string) => void
 }
@@ -26,25 +28,32 @@ const LikeButton: React.FC<Props> = ({
   id,
   setError,
 }) => {
-  const [likePost] = useLikePostMutation()
+  const [likePost, likePostStatus] = useLikePostMutation()
   const [unlikePost] = useUnlikePostMutation()
+  const [loading, setLoading] = useState(false)
+
   const handleLike = async () => {
+    setLoading(true)
     try {
       likedByUser
         ? await unlikePost(id).unwrap()
         : await likePost({ postId: id }).unwrap()
-
       await refetchPosts()
+
+      setLoading(false)
     } catch (error) {
       if (hasErrorField(error)) {
         setError(error.data.error)
       } else {
         setError(error as string)
       }
+      setLoading(false)
     }
   }
 
-  return (
+  return loading ? (
+    <Spinner size="sm" color="secondary" />
+  ) : (
     <Tooltip
       delay={250}
       classNames={{ content: ["bg-default-600/80 text-default-100"] }}
@@ -67,7 +76,11 @@ const LikeButton: React.FC<Props> = ({
                     >
                       <img
                         className="size-8 object-cover rounded-full"
-                        src={`${BASE_URL}${like.user.avatarUrl}`}
+                        src={
+                          like.user.avatarUrl
+                            ? `${BASE_URL}${like.user.avatarUrl}`
+                            : defaultProfileAvatar
+                        }
                       />
                       <div className="hidden group-hover:flex absolute w-max bg-black/70 px-2 py-1 rounded-md -top-5 z-20">
                         {like.user.name}
@@ -82,7 +95,7 @@ const LikeButton: React.FC<Props> = ({
         )
       }
     >
-      <button onClick={handleLike}>
+      <button disabled={loading} onClick={handleLike}>
         <MetaInfo
           count={likes.length}
           color={"#f91880"}

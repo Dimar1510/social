@@ -22,9 +22,15 @@ type Props = {
   isOpen: boolean
   onClose: () => void
   user?: User
+  handleUpdate: () => void
 }
 
-const EditProfile: React.FC<Props> = ({ isOpen, onClose, user }) => {
+const EditProfile: React.FC<Props> = ({
+  isOpen,
+  onClose,
+  handleUpdate,
+  user,
+}) => {
   const { theme } = useContext(ThemeContext)
   const [updateUser, { isLoading }] = useUpdateUserMutation()
   const [error, setError] = useState("")
@@ -77,7 +83,7 @@ const EditProfile: React.FC<Props> = ({ isOpen, onClose, user }) => {
         data.location && formData.append("location", data.location)
         selectedFile && formData.append("image", selectedFile)
         await updateUser({ userData: formData, id }).unwrap()
-        onClose()
+        handleUpdate()
       } catch (error) {
         if (hasErrorField(error)) {
           setError(error.data.error)
@@ -99,7 +105,7 @@ const EditProfile: React.FC<Props> = ({ isOpen, onClose, user }) => {
         data.location && formData.append("location", data.location)
         formData.append("deleteAvatar", "true")
         await updateUser({ userData: formData, id }).unwrap()
-        onClose()
+        handleUpdate()
       } catch (error) {
         if (hasErrorField(error)) {
           setError(error.data.error)
@@ -155,7 +161,7 @@ const EditProfile: React.FC<Props> = ({ isOpen, onClose, user }) => {
                   required={false}
                   onChange={handleFileUpload}
                 />
-                {user?.avatarUrl !== "/uploads/profile.png" && (
+                {user?.avatarUrl && (
                   <Button onClick={handleSubmit(onDeleteAvatar)}>
                     Delete avatar
                   </Button>

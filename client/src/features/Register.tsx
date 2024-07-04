@@ -47,27 +47,31 @@ const Register: React.FC<Props> = ({ isOpen, onClose }) => {
     },
   })
 
-  const [login, loginLoad] = useLoginMutation()
+  const [login] = useLoginMutation()
   const navigate = useNavigate()
-  const [register, registerLoad] = useRegisterMutation()
+  const [register] = useRegisterMutation()
   const [triggerCurrentQuery] = useLazyCurrentQuery()
   const [error, setError] = useState("")
   const { theme } = useContext(ThemeContext)
+  const [loading, setLoading] = useState(false)
 
   const onSubmit = async (data: Register) => {
     if (getValues("password") !== getValues("password_repeat")) {
       setError("Passwords do not match")
       return
     }
+    setLoading(true)
     try {
       await register(data).unwrap()
       await login(data).unwrap()
       await triggerCurrentQuery().unwrap()
+      setLoading(false)
       navigate("/")
     } catch (error) {
       if (hasErrorField(error)) {
         setError(error.data.error)
       }
+      setLoading(false)
     }
   }
 
@@ -126,7 +130,7 @@ const Register: React.FC<Props> = ({ isOpen, onClose }) => {
                   fullWidth
                   color="primary"
                   type="submit"
-                  isLoading={loginLoad.isLoading || registerLoad.isLoading}
+                  isLoading={loading}
                 >
                   Sign up
                 </Button>

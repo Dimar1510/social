@@ -4,6 +4,7 @@ import Card from "../../components/ui/card/PostCard"
 import Back from "../../components/ui/back/Back"
 import CreateComment from "../../components/createComment/CreateComment"
 import { useForm } from "react-hook-form"
+import { Spinner } from "@nextui-org/react"
 
 export type Data = {
   content: string
@@ -13,10 +14,18 @@ export type Data = {
 
 const CurrentPost = () => {
   const params = useParams<{ id: string }>()
-  const { data } = useGetPostByIdQuery(params?.id ?? "")
+  const { data, isLoading } = useGetPostByIdQuery(params?.id ?? "")
   const form = useForm()
 
   if (!data) {
+    return (
+      <div className="mt-[50%] flex justify-center">
+        <Spinner className="scale-[2]" />
+      </div>
+    )
+  }
+
+  if (!data && !isLoading) {
     return <h2>No such post</h2>
   }
 

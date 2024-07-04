@@ -39,20 +39,25 @@ const Login: React.FC<Props> = ({ isOpen, onClose }) => {
   })
 
   const [login, { isLoading }] = useLoginMutation()
-  const [triggerCurrentQuery] = useLazyCurrentQuery()
+  const [triggerCurrentQuery, { isLoading: queryLoading }] =
+    useLazyCurrentQuery()
   const [error, setError] = useState("")
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
 
   const onSubmit = async (data: Login) => {
+    setLoading(true)
     try {
       await login(data).unwrap()
       await triggerCurrentQuery().unwrap()
+      setLoading(false)
       navigate("/")
     } catch (error) {
       if (hasErrorField(error)) {
         setError(error.data.error)
       }
+      setLoading(false)
     }
   }
 
@@ -98,7 +103,7 @@ const Login: React.FC<Props> = ({ isOpen, onClose }) => {
                   fullWidth
                   color="primary"
                   type="submit"
-                  isLoading={isLoading}
+                  isLoading={loading}
                 >
                   Sign in
                 </Button>

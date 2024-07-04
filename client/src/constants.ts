@@ -1,4 +1,4 @@
 export const BASE_URL =
   process.env.NODE_ENV === "production"
-    ? "http://localhost:3000"
-    : "http://localhost:3000"
+    ? "none"
+    : "https://social-production-25ae.up.railway.app"

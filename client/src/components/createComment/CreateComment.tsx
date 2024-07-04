@@ -14,8 +14,9 @@ type Props = {
 
 const CreateComment: React.FC<Props> = ({ form }) => {
   const { id } = useParams<{ id: string }>()
-  const [createComment] = useCreateCommentMutation()
-  const [getPostById] = useLazyGetPostByIdQuery()
+  const [createComment, { isLoading: createLoading }] =
+    useCreateCommentMutation()
+  const [getPostById, { isFetching }] = useLazyGetPostByIdQuery()
   const [error, setError] = useState("")
   const {
     handleSubmit,
@@ -33,10 +34,11 @@ const CreateComment: React.FC<Props> = ({ form }) => {
         formData.append("content", data.comment)
         formData.append("postId", id)
         selectedFile && formData.append("image", selectedFile)
+        reset()
         await createComment({ commentData: formData }).unwrap()
         await getPostById(id).unwrap()
         setSelectedFile(null)
-        reset()
+
         if (inputFile.current) inputFile.current.value = ""
         setError("")
       }
@@ -62,7 +64,12 @@ const CreateComment: React.FC<Props> = ({ form }) => {
         )}
       />
       <div className="flex gap-4 items-center flex-wrap">
-        <Button color="primary" className="" type="submit">
+        <Button
+          isLoading={isFetching || createLoading}
+          color="primary"
+          className=""
+          type="submit"
+        >
           Add comment
         </Button>
         <Tooltip
