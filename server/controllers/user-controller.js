@@ -166,7 +166,7 @@ const UserController = {
           fs.unlink(avatarPath, (err) => {
             if (err) console.log(err);
             else {
-              console.log("\nDeleted file: example_file.txt");
+              console.log("\nDeleted user avatar image");
             }
           });
         }

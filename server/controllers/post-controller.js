@@ -1,5 +1,6 @@
 const { prisma } = require("../prisma/prisma-client");
 const createError = require("./createError");
+const fs = require("fs");
 
 const PostController = {
   createPost: async (req, res) => {
@@ -152,6 +153,16 @@ const PostController = {
 
       if (userId !== post.authorId) {
         return res.status(403).json({ error: "Access denied" });
+      }
+
+      if (post.imageUrl) {
+        const imagePath = post.imageUrl.substring(1);
+        fs.unlink(imagePath, (err) => {
+          if (err) console.log(err);
+          else {
+            console.log("\nDeleted post image");
+          }
+        });
       }
 
       const transaction = await prisma.$transaction([
