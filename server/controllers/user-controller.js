@@ -2,6 +2,7 @@ const { prisma } = require("../prisma/prisma-client");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const createError = require("./createError");
+const fs = require("fs");
 
 const UserController = {
   register: async (req, res) => {
@@ -24,7 +25,6 @@ const UserController = {
           email,
           password: hashedPassword,
           name,
-          avatarUrl: `/uploads/profile.png`,
         },
       });
       res.json(user);
@@ -153,18 +153,35 @@ const UserController = {
           where: { email },
         });
 
+        existingUser.avatarUrl;
         if (existingUser && existingUser.id !== id) {
           return res.status(400).json({ error: "Email already exists" });
         }
       }
 
-      if (deleteAvatar) filePath = "uploads/profile.png";
+      if ((req.file && req.file.path) || deleteAvatar) {
+        const user = await prisma.user.findUnique({ where: { id } });
+        if (user.avatarUrl) {
+          const avatarPath = user.avatarUrl.substring(1);
+          fs.unlink(avatarPath, (err) => {
+            if (err) console.log(err);
+            else {
+              console.log("\nDeleted file: example_file.txt");
+            }
+          });
+        }
+      }
+
       const user = await prisma.user.update({
         where: { id },
         data: {
           email: email || undefined,
           name: name || undefined,
-          avatarUrl: filePath ? `/${filePath}` : undefined,
+          avatarUrl: deleteAvatar
+            ? null
+            : filePath
+            ? `/${filePath}`
+            : undefined,
           dateOfBirth: dateOfBirth || null,
           bio: bio || null,
           location: location || null,
