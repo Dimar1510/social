@@ -63,7 +63,7 @@ const CurrentPost = () => {
         handleReply={handleReply}
         imageUrl={imageUrl}
       />
-      <div className="mt-10">
+      <div className="mt-10 ">
         {data.comments
           ? data.comments.map(comment => (
               <Card
@@ -83,7 +83,7 @@ const CurrentPost = () => {
             ))
           : null}
       </div>
-      <div className="mt-10">
+      <div className="mt-10 mb-20 xs:mb-0">
         <CreateComment form={form} />
       </div>
     </>

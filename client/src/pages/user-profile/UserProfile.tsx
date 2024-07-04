@@ -70,7 +70,7 @@ const UserProfile = () => {
         onClose={onClose}
         user={currentUser}
       />
-      <div className="mt-6">
+      <div className="mt-6 mb-20 xs:mb-0">
         {data.userPosts && data.userPosts.length > 0
           ? data.userPosts.map(
               ({

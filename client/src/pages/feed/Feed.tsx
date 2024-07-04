@@ -10,7 +10,7 @@ const Feed = () => {
       <Spinner className="scale-[2]" />
     </div>
   ) : (
-    <>
+    <div className="mb-20 xs:mb-0">
       {data &&
         data.length > 0 &&
         data.map(
@@ -47,7 +47,7 @@ const Feed = () => {
           </h2>
         </div>
       )}
-    </>
+    </div>
   )
 }
 

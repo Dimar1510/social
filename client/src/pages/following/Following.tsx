@@ -58,7 +58,7 @@ const Following = () => {
         />
       </Card>
 
-      <div className="flex gap-5 flex-col">
+      <div className="flex gap-5 flex-col mb-20 xs:mb-0">
         <SearchInput value={search} onChange={setSearch} />
         {isLoading ? (
           <div className="mt-[30%] flex justify-center">
