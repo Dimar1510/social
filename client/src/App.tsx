@@ -18,7 +18,6 @@ const App = () => {
     <NextUIProvider navigate={navigate}>
       <ThemeProvider>
         <Routes>
-          <Route path="*" element={<ErrorPage />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/" element={<Layout />}>
             <Route path="" element={<Posts />} />
@@ -28,6 +27,7 @@ const App = () => {
             <Route path="following/:id" element={<Following />} />
             <Route path="feed" element={<Feed />} />
           </Route>
+          <Route path="/*" element={<ErrorPage />} />
         </Routes>
       </ThemeProvider>
     </NextUIProvider>
