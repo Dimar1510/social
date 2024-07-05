@@ -9,6 +9,7 @@ export const commentApi = api.injectEndpoints({
         method: "POST",
         body: commentData,
       }),
+      invalidatesTags: ["currentPost"],
     }),
 
     deleteComment: builder.mutation<void, string>({
@@ -16,6 +17,7 @@ export const commentApi = api.injectEndpoints({
         url: `/comments/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["currentPost"],
     }),
   }),
 })

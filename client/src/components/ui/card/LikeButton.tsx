@@ -1,5 +1,5 @@
 import { Spinner, Tooltip } from "@nextui-org/react"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import MetaInfo from "../../meta-info/MetaInfo"
 import { MdFavorite, MdOutlineFavoriteBorder } from "react-icons/md"
@@ -11,7 +11,6 @@ import {
 } from "../../../app/services/likeApi"
 import { hasErrorField } from "../../../utils/has-error-field"
 import defaultProfileAvatar from "../../../assets/images/profile.png"
-import { useLazyGetPostByIdQuery } from "../../../app/services/postApi"
 
 type Props = {
   likes: Like[]
@@ -31,16 +30,29 @@ const LikeButton: React.FC<Props> = ({
   const [likePost, likePostStatus] = useLikePostMutation()
   const [unlikePost] = useUnlikePostMutation()
   const [loading, setLoading] = useState(false)
+  const [showLikes, setShowLikes] = useState(likes.length)
+  const [showLikedByUser, setShowLikedByUser] = useState(likedByUser)
+
+  useEffect(() => {
+    setShowLikes(likes.length)
+  }, [likes])
+
+  useEffect(() => {
+    setShowLikedByUser(likedByUser)
+  }, [likedByUser])
 
   const handleLike = async () => {
     setLoading(true)
+    likedByUser ? setShowLikes(showLikes - 1) : setShowLikes(showLikes + 1)
+    setShowLikedByUser(!showLikedByUser)
     try {
       likedByUser
         ? await unlikePost(id).unwrap()
         : await likePost({ postId: id }).unwrap()
       await refetchPosts()
-
       setLoading(false)
+      setShowLikes(likes.length)
+      setShowLikedByUser(likedByUser)
     } catch (error) {
       if (hasErrorField(error)) {
         setError(error.data.error)
@@ -48,12 +60,12 @@ const LikeButton: React.FC<Props> = ({
         setError(error as string)
       }
       setLoading(false)
+      setShowLikes(showLikes)
+      setShowLikedByUser(showLikedByUser)
     }
   }
 
-  return loading ? (
-    <Spinner size="sm" color="secondary" />
-  ) : (
+  return (
     <Tooltip
       delay={250}
       classNames={{ content: ["bg-default-600/80 text-default-100"] }}
@@ -97,10 +109,10 @@ const LikeButton: React.FC<Props> = ({
     >
       <button disabled={loading} onClick={handleLike}>
         <MetaInfo
-          count={likes.length}
+          count={showLikes}
           color={"#f91880"}
           icon={
-            likedByUser ? (
+            showLikedByUser ? (
               <MdFavorite color="#f91880" />
             ) : (
               <MdOutlineFavoriteBorder />

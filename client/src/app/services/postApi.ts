@@ -9,6 +9,7 @@ export const postApi = api.injectEndpoints({
         method: "POST",
         body: postData,
       }),
+      invalidatesTags: ["allPosts"],
     }),
 
     getAllPosts: builder.query<Post[], void>({
@@ -16,6 +17,7 @@ export const postApi = api.injectEndpoints({
         url: "/posts",
         method: "GET",
       }),
+      providesTags: ["allPosts"],
     }),
 
     getFeedPosts: builder.query<Post[], void>({
@@ -23,6 +25,7 @@ export const postApi = api.injectEndpoints({
         url: "/posts/feed",
         method: "GET",
       }),
+      providesTags: ["allPosts"],
     }),
 
     getPostById: builder.query<Post, string>({
@@ -30,6 +33,7 @@ export const postApi = api.injectEndpoints({
         url: `/posts/${id}`,
         method: "GET",
       }),
+      providesTags: ["currentPost"],
     }),
 
     deletePost: builder.mutation<void, string>({
@@ -37,6 +41,7 @@ export const postApi = api.injectEndpoints({
         url: `/posts/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["allPosts"],
     }),
   }),
 })
@@ -50,6 +55,7 @@ export const {
   useGetPostByIdQuery,
   useLazyGetPostByIdQuery,
   useDeletePostMutation,
+  usePrefetch,
 } = postApi
 
 export const {

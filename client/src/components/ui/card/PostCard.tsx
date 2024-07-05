@@ -20,7 +20,11 @@ import User from "../../user/User"
 import Typography from "../typography/Typography"
 import ErrorMessage from "../error-message/ErrorMessage"
 import { BASE_URL } from "../../../constants"
-import { useLazyGetUserByIdQuery } from "../../../app/services/userApi"
+import {
+  getUserById,
+  useLazyGetUserByIdQuery,
+  usePrefetch,
+} from "../../../app/services/userApi"
 import { Like } from "../../../app/types"
 import LikeButton from "./LikeButton"
 import CommentButton from "./CommentButton"
@@ -64,6 +68,8 @@ const Card: React.FC<Props> = ({
   const [triggerGetAllFeed] = useLazyGetFeedPostsQuery()
   const [error, setError] = useState("")
   const currentUser = useSelector(selectCurrent)
+  const prefetch = usePrefetch("getUserById")
+  const [deleteCard, setDeleteCard] = useState(false)
 
   const refetchPosts = async () => {
     switch (cardFor) {
@@ -88,57 +94,67 @@ const Card: React.FC<Props> = ({
   }
 
   return (
-    <NextCard className="mb-6" shadow="sm">
-      <CardHeader className="justify-between items-center bg-transparent">
-        <Link to={`/users/${authorId}`}>
-          <User
-            name={name}
-            avatarUrl={avatarUrl}
-            description={createdAt && formatToClientDate(createdAt).toString()}
-            className="text-small font-semibold leading-none text-default-600"
-          />
-        </Link>
-        {authorId === currentUser?.id && (
-          <DeleteButton
-            cardFor={cardFor}
-            commentId={commentId}
-            id={id}
-            refetchPosts={refetchPosts}
-            setError={setError}
-          />
-        )}
-      </CardHeader>
-      <CardBody className="px-3 py-2 flex flex-col gap-4">
-        <Typography size="text-md">{content}</Typography>
-        {imageUrl && (
-          <Image
-            src={`${BASE_URL}${imageUrl}`}
-            className="max-h-[300px] object-cover"
-          />
-        )}
-      </CardBody>
-      <CardFooter className="gap-3">
-        <div className="flex gap-5 items-center ">
-          {cardFor !== "comment" && (
-            <>
-              {cardFor !== "current-post" && (
-                <CommentButton commentsCount={commentsCount} id={id} />
-              )}
-
-              <LikeButton
-                likes={likes}
-                likedByUser={likedByUser}
-                id={id}
-                refetchPosts={refetchPosts}
-                setError={setError}
-              />
-            </>
+    !deleteCard && (
+      <NextCard className="mb-6" shadow="sm">
+        <CardHeader className="justify-between items-center bg-transparent">
+          <Link
+            to={`/users/${authorId}`}
+            onMouseEnter={() => prefetch(authorId)}
+          >
+            <User
+              name={name}
+              avatarUrl={avatarUrl}
+              description={
+                createdAt && formatToClientDate(createdAt).toString()
+              }
+              className="text-small font-semibold leading-none text-default-600"
+            />
+          </Link>
+          {authorId === currentUser?.id && (
+            <DeleteButton
+              cardFor={cardFor}
+              commentId={commentId}
+              id={id}
+              refetchPosts={refetchPosts}
+              setError={setError}
+              setDeleteCard={setDeleteCard}
+            />
           )}
-          {handleReply && <ReplyButton name={name} handleReply={handleReply} />}
-        </div>
-        <ErrorMessage error={error} />
-      </CardFooter>
-    </NextCard>
+        </CardHeader>
+        <CardBody className="px-3 py-2 flex flex-col gap-4">
+          <Typography size="text-md">{content}</Typography>
+          {imageUrl && (
+            <Image
+              src={`${BASE_URL}${imageUrl}`}
+              className="max-h-[300px] object-cover"
+            />
+          )}
+        </CardBody>
+        <CardFooter className="gap-3">
+          <div className="flex gap-5 items-center ">
+            {cardFor !== "comment" && (
+              <>
+                {cardFor !== "current-post" && (
+                  <CommentButton commentsCount={commentsCount} id={id} />
+                )}
+
+                <LikeButton
+                  likes={likes}
+                  likedByUser={likedByUser}
+                  id={id}
+                  refetchPosts={refetchPosts}
+                  setError={setError}
+                />
+              </>
+            )}
+            {handleReply && (
+              <ReplyButton name={name} handleReply={handleReply} />
+            )}
+          </div>
+          <ErrorMessage error={error} />
+        </CardFooter>
+      </NextCard>
+    )
   )
 }
 

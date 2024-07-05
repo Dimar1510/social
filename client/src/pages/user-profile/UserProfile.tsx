@@ -82,6 +82,7 @@ const UserProfile = () => {
                 likes,
                 likedByUser,
                 createdAt,
+                imageUrl,
               }) => (
                 <PostCard
                   key={id}
@@ -95,6 +96,7 @@ const UserProfile = () => {
                   likedByUser={likedByUser}
                   createdAt={createdAt}
                   cardFor="user-profile"
+                  imageUrl={imageUrl}
                 />
               ),
             )

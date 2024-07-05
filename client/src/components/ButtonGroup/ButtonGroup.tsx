@@ -11,7 +11,7 @@ import {
   useUnfollowUserMutation,
 } from "../../app/services/followApi"
 import { useLazyGetUserByIdQuery } from "../../app/services/userApi"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 type Props = {
   data: User
@@ -30,20 +30,33 @@ const ButtonGroup: React.FC<Props> = ({
   const [unfollowUser] = useUnfollowUserMutation()
   const [triggerGetUserByIdQuery] = useLazyGetUserByIdQuery()
   const [loading, setLoading] = useState(false)
+  const [followersCount, setFollowersCount] = useState(data.followers.length)
+  const [showFollowing, setShowFollowing] = useState(data.isFollowing)
 
   if (!data) return null
 
+  useEffect(() => {
+    setShowFollowing(data.isFollowing)
+    setFollowersCount(data.followers.length)
+  }, [data])
+
   const handleFollow = async () => {
+    showFollowing
+      ? setFollowersCount(followersCount - 1)
+      : setFollowersCount(followersCount + 1)
+    setShowFollowing(!showFollowing)
     setLoading(true)
     try {
       if (userId) {
         data.isFollowing
           ? await unfollowUser(userId).unwrap()
           : await followUser({ followingId: userId }).unwrap()
-        await triggerGetUserByIdQuery(userId)
+        // await triggerGetUserByIdQuery(userId)
         setLoading(false)
       }
     } catch (error) {
+      setFollowersCount(followersCount)
+      setShowFollowing(showFollowing)
       setLoading(false)
     }
   }
@@ -55,13 +68,13 @@ const ButtonGroup: React.FC<Props> = ({
           <div className="group w-[120px]">
             <Button
               fullWidth
-              color={data.isFollowing ? "danger" : "primary"}
+              color={showFollowing ? "danger" : "primary"}
               variant="flat"
               className="gap-2 items-center hidden group-hover:flex"
               onClick={handleFollow}
-              isLoading={loading}
+              disabled={loading}
               endContent={
-                data.isFollowing ? (
+                showFollowing ? (
                   <MdOutlinePersonAddDisabled />
                 ) : (
                   <MdOutlinePersonAddAlt1 />
@@ -71,11 +84,11 @@ const ButtonGroup: React.FC<Props> = ({
               {data.isFollowing ? "Unfollow" : "Follow"}
             </Button>
             <Button
-              isLoading={loading}
+              disabled={loading}
               fullWidth
               className="group-hover:hidden "
             >
-              {data.isFollowing ? "Following" : "Not following"}
+              {showFollowing ? "✔ Following" : "Not following"}
             </Button>
           </div>
         ) : (
@@ -88,8 +101,8 @@ const ButtonGroup: React.FC<Props> = ({
           <span>following</span>
         </Button>
         <Button as={NextLink} href={`/followers/${data.id}`}>
-          <span>{data.followers.length}</span>
-          <span>follower{data.followers.length !== 1 && "s"}</span>
+          <span>{followersCount}</span>
+          <span>follower{followersCount !== 1 && "s"}</span>
         </Button>
       </div>
     </>

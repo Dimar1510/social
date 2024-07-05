@@ -12,6 +12,7 @@ type Props = {
   id: string
   commentId: string
   setError: (error: string) => void
+  setDeleteCard: (arg: boolean) => void
 }
 
 const DeleteButton: React.FC<Props> = ({
@@ -20,6 +21,7 @@ const DeleteButton: React.FC<Props> = ({
   id,
   commentId,
   setError,
+  setDeleteCard,
 }) => {
   const [deletePost, deletePostStatus] = useDeletePostMutation()
   const [deleteComment, deleteCommentStatus] = useDeleteCommentMutation()
@@ -31,20 +33,23 @@ const DeleteButton: React.FC<Props> = ({
     try {
       switch (cardFor) {
         case "user-profile":
+          setDeleteCard(true)
           await deletePost(id).unwrap()
-          await refetchPosts()
+          // await refetchPosts()
           break
         case "post":
+          setDeleteCard(true)
           await deletePost(id).unwrap()
-          await refetchPosts()
+          // await refetchPosts()
           break
         case "current-post":
           await deletePost(id).unwrap()
           navigate("/")
           break
         case "comment":
+          setDeleteCard(true)
           await deleteComment(commentId).unwrap()
-          await refetchPosts()
+          // await refetchPosts()
           break
         default:
           throw new Error("Wrong argument")
@@ -56,6 +61,7 @@ const DeleteButton: React.FC<Props> = ({
         setError(error as string)
       }
       setLoading(false)
+      setDeleteCard(false)
     }
   }
   return (

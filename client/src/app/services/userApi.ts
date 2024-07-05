@@ -37,6 +37,7 @@ export const userApi = api.injectEndpoints({
         url: `/users/${id}`,
         method: "GET",
       }),
+      providesTags: ["user"],
     }),
 
     updateUser: builder.mutation<User, { userData: FormData; id: string }>({
@@ -57,6 +58,7 @@ export const {
   useLazyCurrentQuery,
   useLazyGetUserByIdQuery,
   useUpdateUserMutation,
+  usePrefetch,
 } = userApi
 
 export const {

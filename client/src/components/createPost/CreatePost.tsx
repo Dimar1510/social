@@ -18,8 +18,7 @@ type Props = {
 }
 
 const CreatePost: React.FC<Props> = ({ onClose }) => {
-  const [createPost, { isLoading: createLoading }] = useCreatePostMutation()
-  const [triggerGetAllPosts, { isFetching }] = useLazyGetAllPostsQuery()
+  const [createPost, status] = useCreatePostMutation()
 
   const {
     handleSubmit,
@@ -38,7 +37,6 @@ const CreatePost: React.FC<Props> = ({ onClose }) => {
       formData.append("content", data.content)
       selectedFile && formData.append("image", selectedFile)
       await createPost({ postData: formData }).unwrap()
-      await triggerGetAllPosts().unwrap()
       setSelectedFile(null)
       reset()
       if (inputFile.current) inputFile.current.value = ""
@@ -71,7 +69,7 @@ const CreatePost: React.FC<Props> = ({ onClose }) => {
 
       <div className="flex gap-4 items-center flex-wrap">
         <Button
-          isLoading={isFetching || createLoading}
+          isLoading={status.isLoading}
           color="primary"
           className=""
           type="submit"
@@ -79,7 +77,7 @@ const CreatePost: React.FC<Props> = ({ onClose }) => {
           Add post
         </Button>
 
-        {!isFetching && !createLoading && (
+        {!status.isLoading && (
           <>
             <Tooltip
               closeDelay={50}

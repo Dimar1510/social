@@ -12,6 +12,7 @@ import { logout, selectIsAuthenticated } from "../../features/userSlice"
 import { CiLogout } from "react-icons/ci"
 import { BASE_URL } from "../../constants"
 import defaultProfileAvatar from "../../assets/images/profile.png"
+import { usePrefetch } from "../../app/services/userApi"
 
 const UserControl = () => {
   const current = useSelector(selectCurrent)
@@ -19,7 +20,7 @@ const UserControl = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const isAuthenticated = useSelector(selectIsAuthenticated)
-
+  const prefetch = usePrefetch("getUserById")
   const handleLogout = () => {
     dispatch(logout())
     localStorage.removeItem("token")
@@ -36,7 +37,7 @@ const UserControl = () => {
 
   return (
     <div className="flex flex-col gap-2 justify-start short:mb-6">
-      <Link to={`/users/${id}`}>
+      <Link to={`/users/${id}`} onMouseEnter={() => prefetch(id)}>
         <Card className=" bg-transparent hover:bg-content1 " shadow="none">
           <CardBody className="p-0">
             <User

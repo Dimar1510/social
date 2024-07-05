@@ -36,7 +36,6 @@ const CreateComment: React.FC<Props> = ({ form }) => {
         selectedFile && formData.append("image", selectedFile)
         reset()
         await createComment({ commentData: formData }).unwrap()
-        await getPostById(id).unwrap()
         setSelectedFile(null)
 
         if (inputFile.current) inputFile.current.value = ""
