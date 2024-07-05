@@ -2,10 +2,15 @@ import { Spinner } from "@nextui-org/react"
 import { useGetAllPostsQuery } from "../../app/services/postApi"
 import CreatePost from "../../components/createPost/CreatePost"
 import Card from "../../components/ui/card/PostCard"
+import { usePrefetch } from "../../app/services/userApi"
+import { useSelector } from "react-redux"
+import { selectCurrent } from "../../features/userSlice"
 
 const Posts = () => {
+  const current = useSelector(selectCurrent)
   const { data, isLoading } = useGetAllPostsQuery()
-
+  const prefetchUser = usePrefetch("getUserById")
+  if (current) prefetchUser(current.id)
   return (
     <>
       <div className="mb-10 w-full">
