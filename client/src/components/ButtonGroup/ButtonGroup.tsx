@@ -28,7 +28,6 @@ const ButtonGroup: React.FC<Props> = ({
 }) => {
   const [followUser] = useFollowUserMutation()
   const [unfollowUser] = useUnfollowUserMutation()
-  const [triggerGetUserByIdQuery] = useLazyGetUserByIdQuery()
   const [loading, setLoading] = useState(false)
   const [followersCount, setFollowersCount] = useState(data.followers.length)
   const [showFollowing, setShowFollowing] = useState(data.isFollowing)
