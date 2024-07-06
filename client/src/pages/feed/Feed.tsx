@@ -23,6 +23,7 @@ const Feed = () => {
             likes,
             likedByUser,
             createdAt,
+            imageUrl,
           }) => (
             <Card
               key={id}
@@ -36,6 +37,7 @@ const Feed = () => {
               likedByUser={likedByUser}
               createdAt={createdAt}
               cardFor="feed"
+              imageUrl={imageUrl}
             />
           ),
         )}
