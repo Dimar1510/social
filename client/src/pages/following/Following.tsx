@@ -74,7 +74,9 @@ const Following = () => {
               <div className="z-10 min-h-[40px] flex flex-col justify-center overflow-hidden relative after:text-center after:text-lg empty:after:content-['No_search_results'] after:size-full after:absolute after:left-0 after:top-0 after:-z-10">
                 {data.following?.map(
                   user =>
-                    user.following.name?.toLowerCase().includes(search) && (
+                    user.following.name
+                      ?.toLowerCase()
+                      .includes(search.toLowerCase()) && (
                       <FollowingCard
                         data={data}
                         user={user}

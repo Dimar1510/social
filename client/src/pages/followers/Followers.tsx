@@ -49,7 +49,9 @@ const Followers = () => {
               <div className="z-10 min-h-[40px] flex flex-col justify-center overflow-hidden relative after:text-center after:text-lg empty:after:content-['No_search_results'] after:size-full after:absolute after:left-0 after:top-0 after:-z-10">
                 {data.followers?.map(
                   user =>
-                    user.follower.name?.toLowerCase().includes(search) && (
+                    user.follower.name
+                      ?.toLowerCase()
+                      .includes(search.toLowerCase()) && (
                       <div key={user.follower.id}>
                         <Link to={`/users/${user.follower.id}`}>
                           <User
