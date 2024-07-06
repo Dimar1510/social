@@ -69,7 +69,7 @@ const ButtonGroup: React.FC<Props> = ({
               fullWidth
               color={showFollowing ? "danger" : "primary"}
               variant="flat"
-              className="gap-2 items-center hidden group-hover:flex"
+              className="gap-2 items-center group-hover:flex"
               onClick={handleFollow}
               disabled={loading}
               endContent={
@@ -80,14 +80,7 @@ const ButtonGroup: React.FC<Props> = ({
                 )
               }
             >
-              {data.isFollowing ? "Unfollow" : "Follow"}
-            </Button>
-            <Button
-              disabled={loading}
-              fullWidth
-              className="group-hover:hidden "
-            >
-              {showFollowing ? "✔ Following" : "Not following"}
+              {showFollowing ? "Unfollow" : "Follow"}
             </Button>
           </div>
         ) : (
