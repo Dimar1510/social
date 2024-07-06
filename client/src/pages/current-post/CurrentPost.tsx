@@ -5,6 +5,7 @@ import Back from "../../components/ui/back/Back"
 import CreateComment from "../../components/createComment/CreateComment"
 import { useForm } from "react-hook-form"
 import { Spinner } from "@nextui-org/react"
+import { useEffect } from "react"
 
 export type Data = {
   content: string
@@ -16,6 +17,10 @@ const CurrentPost = () => {
   const params = useParams<{ id: string }>()
   const { data, isLoading } = useGetPostByIdQuery(params?.id ?? "")
   const form = useForm()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   if (!data) {
     return (

@@ -6,7 +6,7 @@ import {
 } from "../../app/services/userApi"
 import { Card, Spinner, useDisclosure } from "@nextui-org/react"
 import { useDispatch, useSelector } from "react-redux"
-import { resetUser, selectCurrent, selectUser } from "../../features/userSlice"
+import { resetUser, selectCurrent } from "../../features/userSlice"
 import { useEffect } from "react"
 import EditProfile from "../../components/edit-profile/EditProfile"
 import PostCard from "../../components/ui/card/PostCard"
@@ -28,6 +28,10 @@ const UserProfile = () => {
     },
     [],
   )
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   if (!data || isLoading) {
     return (
