@@ -85,6 +85,7 @@ const Register: React.FC<Props> = ({ isOpen, onClose }) => {
       isOpen={isOpen}
       onClose={handleCLose}
       className={`${theme} text-foreground pb-4`}
+      placement="center"
     >
       <ModalContent>
         <>

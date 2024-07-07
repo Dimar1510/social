@@ -118,6 +118,7 @@ const EditProfile: React.FC<Props> = ({
       isOpen={isOpen}
       onClose={onClose}
       className={`${theme} text-foreground`}
+      placement="center"
     >
       <ModalContent>
         <>

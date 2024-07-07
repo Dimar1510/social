@@ -111,6 +111,7 @@ const Sidebar = () => {
         isOpen={isOpen}
         onClose={onClose}
         className={`${theme} text-foreground pb-4`}
+        placement="center"
       >
         <ModalContent>
           <>
