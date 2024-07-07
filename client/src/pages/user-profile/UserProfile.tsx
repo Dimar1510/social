@@ -4,7 +4,7 @@ import {
   useLazyCurrentQuery,
   useLazyGetUserByIdQuery,
 } from "../../app/services/userApi"
-import { Card, Spinner, useDisclosure } from "@nextui-org/react"
+import { Card, Skeleton, Spinner, useDisclosure } from "@nextui-org/react"
 import { useDispatch, useSelector } from "react-redux"
 import { resetUser, selectCurrent } from "../../features/userSlice"
 import { useEffect } from "react"
@@ -12,6 +12,7 @@ import EditProfile from "../../components/edit-profile/EditProfile"
 import PostCard from "../../components/ui/card/PostCard"
 import UserCard from "../../components/UserCard/UserCard"
 import Back from "../../components/ui/back/Back"
+import PostSkeleton from "../../components/ui/Skeleton/PostSkeleton"
 
 const UserProfile = () => {
   const params = useParams<{ id: string }>()
@@ -33,13 +34,13 @@ const UserProfile = () => {
     window.scrollTo(0, 0)
   }, [])
 
-  if (!data || isLoading) {
-    return (
-      <div className="mt-[50%] flex justify-center">
-        <Spinner className="scale-[2]" />
-      </div>
-    )
-  }
+  // if (!data || isLoading) {
+  //   return (
+  //     <div className="mt-[50%] flex justify-center">
+  //       <Spinner className="scale-[2]" />
+  //     </div>
+  //   )
+  // }
 
   const handleUpdate = async () => {
     try {
@@ -52,21 +53,38 @@ const UserProfile = () => {
       console.error(error)
     }
   }
-  const postsLength = data.userPosts.length
+  const voidArr = new Array(3).fill("")
 
   return (
     <>
       <Card className="flex-row p-2 mb-6" shadow="sm">
         <Back />
-        <div className="flex flex-col">
-          <div className="font-bold text-ellipsis break-all">{data.name}</div>
-          <div className="text-small text-default-400 flex">
-            {postsLength}
-            {postsLength === 1 ? " post" : " posts"}
+        {data ? (
+          <div className="flex flex-col">
+            <div className="font-bold text-ellipsis break-all">{data.name}</div>
+            <div className="text-small text-default-400 flex">
+              {data.userPosts.length}
+              {data.userPosts.length === 1 ? " post" : " posts"}
+            </div>
           </div>
-        </div>
+        ) : (
+          <>
+            <Skeleton className="h-3 w-10" /> <Skeleton className="h-3 w-10" />
+          </>
+        )}
       </Card>
-      <UserCard data={data} onOpen={onOpen} userId={params?.id} />
+      {data ? (
+        <UserCard data={data} onOpen={onOpen} userId={params?.id} />
+      ) : (
+        <Card className="h-60 w-full mb-6 flex justify-between items-center xs:items-start flex-col xs:flex-row p-6">
+          <Skeleton className="size-[200px] rounded-lg" />
+          <div className="flex flex-col items-center xs:items-end gap-4">
+            <Skeleton className="h-10 w-32 rounded-lg mt-6" />
+            <Skeleton className="h-10 w-32 rounded-lg" />
+            <Skeleton className="h-10 w-32 rounded-lg" />
+          </div>
+        </Card>
+      )}
 
       <EditProfile
         isOpen={isOpen}
@@ -74,38 +92,42 @@ const UserProfile = () => {
         onClose={onClose}
         user={currentUser}
       />
-      <div className="mt-6 mb-20 xs:mb-0">
-        {data.userPosts && data.userPosts.length > 0
-          ? data.userPosts.map(
-              ({
-                content,
-                author,
-                id,
-                authorId,
-                comments,
-                likes,
-                likedByUser,
-                createdAt,
-                imageUrl,
-              }) => (
-                <PostCard
-                  key={id}
-                  avatarUrl={author.avatarUrl ?? ""}
-                  content={content}
-                  name={author.name ?? ""}
-                  likes={likes}
-                  commentsCount={comments.length}
-                  authorId={authorId}
-                  id={id}
-                  likedByUser={likedByUser}
-                  createdAt={createdAt}
-                  cardFor="user-profile"
-                  imageUrl={imageUrl}
-                />
-              ),
-            )
-          : null}
-      </div>
+      {data ? (
+        <div className="mt-6 mb-20 xs:mb-0">
+          {data.userPosts && data.userPosts.length > 0
+            ? data.userPosts.map(
+                ({
+                  content,
+                  author,
+                  id,
+                  authorId,
+                  comments,
+                  likes,
+                  likedByUser,
+                  createdAt,
+                  imageUrl,
+                }) => (
+                  <PostCard
+                    key={id}
+                    avatarUrl={author.avatarUrl ?? ""}
+                    content={content}
+                    name={author.name ?? ""}
+                    likes={likes}
+                    commentsCount={comments.length}
+                    authorId={authorId}
+                    id={id}
+                    likedByUser={likedByUser}
+                    createdAt={createdAt}
+                    cardFor="user-profile"
+                    imageUrl={imageUrl}
+                  />
+                ),
+              )
+            : null}
+        </div>
+      ) : (
+        voidArr.map((e, i) => <PostSkeleton key={i} />)
+      )}
     </>
   )
 }

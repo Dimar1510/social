@@ -6,6 +6,7 @@ import CreateComment from "../../components/createComment/CreateComment"
 import { useForm } from "react-hook-form"
 import { Spinner } from "@nextui-org/react"
 import { useEffect } from "react"
+import PostSkeleton from "../../components/ui/Skeleton/PostSkeleton"
 
 export type Data = {
   content: string
@@ -17,6 +18,7 @@ const CurrentPost = () => {
   const params = useParams<{ id: string }>()
   const { data, isLoading } = useGetPostByIdQuery(params?.id ?? "")
   const form = useForm()
+  const voidArr = new Array(3).fill("")
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -24,9 +26,14 @@ const CurrentPost = () => {
 
   if (!data) {
     return (
-      <div className="mt-[50%] flex justify-center">
-        <Spinner className="scale-[2]" />
-      </div>
+      <>
+        {voidArr.map((e, i) => (
+          <PostSkeleton key={i} />
+        ))}
+        <div className="mt-10 mb-20 xs:mb-0">
+          <CreateComment form={form} />
+        </div>
+      </>
     )
   }
 

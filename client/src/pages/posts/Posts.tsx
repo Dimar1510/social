@@ -5,21 +5,21 @@ import Card from "../../components/ui/card/PostCard"
 import { usePrefetch } from "../../app/services/userApi"
 import { useSelector } from "react-redux"
 import { selectCurrent } from "../../features/userSlice"
+import PostSkeleton from "../../components/ui/Skeleton/PostSkeleton"
 
 const Posts = () => {
   const current = useSelector(selectCurrent)
   const { data, isLoading } = useGetAllPostsQuery()
   const prefetchUser = usePrefetch("getUserById")
   if (current) prefetchUser(current.id)
+  const voidArr = new Array(5).fill("")
   return (
     <>
       <div className="mb-10 w-full">
         <CreatePost />
       </div>
       {isLoading ? (
-        <div className="mt-[30%] flex justify-center">
-          <Spinner className="scale-[2]" />
-        </div>
+        voidArr.map((e, i) => <PostSkeleton key={i} />)
       ) : (
         <div className="mb-20 xs:mb-0">
           {data && data.length > 0

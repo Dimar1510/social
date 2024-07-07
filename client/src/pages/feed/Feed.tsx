@@ -1,14 +1,14 @@
 import { Spinner } from "@nextui-org/react"
 import { useGetFeedPostsQuery } from "../../app/services/postApi"
 import Card from "../../components/ui/card/PostCard"
+import PostSkeleton from "../../components/ui/Skeleton/PostSkeleton"
 
 const Feed = () => {
   const { data, isLoading } = useGetFeedPostsQuery()
+  const voidArr = new Array(5).fill("")
 
   return isLoading ? (
-    <div className="mt-[30%] flex justify-center">
-      <Spinner className="scale-[2]" />
-    </div>
+    voidArr.map((e, i) => <PostSkeleton key={i} />)
   ) : (
     <div className="mb-20 xs:mb-0">
       {data &&
