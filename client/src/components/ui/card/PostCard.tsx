@@ -5,7 +5,6 @@ import {
   CardHeader,
   Image,
   Card as NextCard,
-  Spinner,
 } from "@nextui-org/react"
 import {
   useLazyGetAllPostsQuery,
@@ -13,7 +12,7 @@ import {
   useLazyGetPostByIdQuery,
 } from "../../../app/services/postApi"
 import { Link } from "react-router-dom"
-import { useSelector } from "react-redux"
+import { useAppSelector as useSelector } from "../../../app/hooks"
 import { selectCurrent } from "../../../features/userSlice"
 import { formatToClientDate } from "../../../utils/format-to-client-date"
 import User from "../../user/User"
@@ -21,7 +20,6 @@ import Typography from "../typography/Typography"
 import ErrorMessage from "../error-message/ErrorMessage"
 import { BASE_URL } from "../../../constants"
 import {
-  getUserById,
   useLazyGetUserByIdQuery,
   usePrefetch,
 } from "../../../app/services/userApi"

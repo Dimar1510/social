@@ -1,9 +1,8 @@
-import { Spinner } from "@nextui-org/react"
 import { useGetAllPostsQuery } from "../../app/services/postApi"
 import CreatePost from "../../components/createPost/CreatePost"
 import Card from "../../components/ui/card/PostCard"
 import { usePrefetch } from "../../app/services/userApi"
-import { useSelector } from "react-redux"
+import { useAppSelector as useSelector } from "../../app/hooks"
 import { selectCurrent } from "../../features/userSlice"
 import PostSkeleton from "../../components/ui/Skeleton/PostSkeleton"
 

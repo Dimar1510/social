@@ -16,7 +16,7 @@ const CreateComment: React.FC<Props> = ({ form }) => {
   const { id } = useParams<{ id: string }>()
   const [createComment, { isLoading: createLoading }] =
     useCreateCommentMutation()
-  const [getPostById, { isFetching }] = useLazyGetPostByIdQuery()
+  const [, { isFetching }] = useLazyGetPostByIdQuery()
   const [error, setError] = useState("")
   const {
     handleSubmit,

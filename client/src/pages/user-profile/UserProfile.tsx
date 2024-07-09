@@ -4,8 +4,11 @@ import {
   useLazyCurrentQuery,
   useLazyGetUserByIdQuery,
 } from "../../app/services/userApi"
-import { Card, Skeleton, Spinner, useDisclosure } from "@nextui-org/react"
-import { useDispatch, useSelector } from "react-redux"
+import { Card, Skeleton, useDisclosure } from "@nextui-org/react"
+import {
+  useAppDispatch as useDispatch,
+  useAppSelector as useSelector,
+} from "../../app/hooks"
 import { resetUser, selectCurrent } from "../../features/userSlice"
 import { useEffect } from "react"
 import EditProfile from "../../components/edit-profile/EditProfile"
@@ -16,7 +19,7 @@ import PostSkeleton from "../../components/ui/Skeleton/PostSkeleton"
 
 const UserProfile = () => {
   const params = useParams<{ id: string }>()
-  const { data, isLoading } = useGetUserByIdQuery(params?.id ?? "")
+  const { data } = useGetUserByIdQuery(params?.id ?? "")
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [triggerGetUserByIdQuery] = useLazyGetUserByIdQuery()
   const [triggerCurrentQuery] = useLazyCurrentQuery()
@@ -27,20 +30,12 @@ const UserProfile = () => {
     () => () => {
       dispatch(resetUser())
     },
-    [],
+    [dispatch],
   )
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
-
-  // if (!data || isLoading) {
-  //   return (
-  //     <div className="mt-[50%] flex justify-center">
-  //       <Spinner className="scale-[2]" />
-  //     </div>
-  //   )
-  // }
 
   const handleUpdate = async () => {
     try {

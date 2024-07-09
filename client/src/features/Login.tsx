@@ -19,17 +19,13 @@ type Props = {
   onClose: () => void
 }
 
-type Login = {
+type TLogin = {
   email: string
   password: string
 }
 
 const Login: React.FC<Props> = ({ isOpen, onClose }) => {
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<Login>({
+  const { handleSubmit, control } = useForm<TLogin>({
     mode: "onChange",
     reValidateMode: "onBlur",
     defaultValues: {
@@ -38,15 +34,14 @@ const Login: React.FC<Props> = ({ isOpen, onClose }) => {
     },
   })
 
-  const [login, { isLoading }] = useLoginMutation()
-  const [triggerCurrentQuery, { isLoading: queryLoading }] =
-    useLazyCurrentQuery()
+  const [login] = useLoginMutation()
+  const [triggerCurrentQuery] = useLazyCurrentQuery()
   const [error, setError] = useState("")
   const { theme } = useContext(ThemeContext)
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
 
-  const onSubmit = async (data: Login) => {
+  const onSubmit = async (data: TLogin) => {
     setLoading(true)
     try {
       await login(data).unwrap()

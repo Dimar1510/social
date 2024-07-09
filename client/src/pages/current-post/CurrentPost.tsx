@@ -4,7 +4,6 @@ import Card from "../../components/ui/card/PostCard"
 import Back from "../../components/ui/back/Back"
 import CreateComment from "../../components/createComment/CreateComment"
 import { useForm } from "react-hook-form"
-import { Spinner } from "@nextui-org/react"
 import { useEffect } from "react"
 import PostSkeleton from "../../components/ui/Skeleton/PostSkeleton"
 

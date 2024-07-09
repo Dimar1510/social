@@ -1,7 +1,7 @@
 import { Outlet, useNavigate } from "react-router-dom"
 import Sidebar from "../Sidebar/Sidebar"
 import Wrapper from "../wrapper/Wrapper"
-import { useSelector } from "react-redux"
+import { useAppSelector as useSelector } from "../../app/hooks"
 import { selectIsAuthenticated } from "../../features/userSlice"
 import { useEffect } from "react"
 
@@ -13,7 +13,7 @@ const Layout = () => {
     if (!isAuthenticated) {
       navigate("/auth")
     }
-  }, [])
+  }, [isAuthenticated, navigate])
   return (
     <>
       <Wrapper>

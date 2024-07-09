@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react"
+import React, { useContext, useState } from "react"
 import { User } from "../../app/types"
 import { ThemeContext } from "../theme-provider"
 import { useUpdateUserMutation } from "../../app/services/userApi"

@@ -2,7 +2,7 @@ import { Button, Switch, useDisclosure } from "@nextui-org/react"
 import { useContext, useEffect } from "react"
 import Login from "../../features/Login"
 import Register from "../../features/Register"
-import { useSelector } from "react-redux"
+import { useAppSelector as useSelector } from "../../app/hooks"
 import { useNavigate } from "react-router-dom"
 import { selectIsAuthenticated } from "../../features/userSlice"
 import { GiBirdTwitter } from "react-icons/gi"
@@ -22,7 +22,7 @@ const Auth = () => {
     if (isAuthenticated) {
       navigate("/")
     }
-  }, [])
+  }, [isAuthenticated, navigate])
 
   const themeSelected = theme === "light"
 

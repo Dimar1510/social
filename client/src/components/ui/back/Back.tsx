@@ -1,5 +1,3 @@
-import React from "react"
-import { FaRegArrowAltCircleLeft } from "react-icons/fa"
 import { IoArrowBackOutline } from "react-icons/io5"
 import { useNavigate } from "react-router-dom"
 

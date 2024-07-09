@@ -1,4 +1,4 @@
-import { Spinner, Tooltip } from "@nextui-org/react"
+import { Tooltip, user } from "@nextui-org/react"
 import React, { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import MetaInfo from "../../meta-info/MetaInfo"
@@ -27,7 +27,7 @@ const LikeButton: React.FC<Props> = ({
   id,
   setError,
 }) => {
-  const [likePost, likePostStatus] = useLikePostMutation()
+  const [likePost] = useLikePostMutation()
   const [unlikePost] = useUnlikePostMutation()
   const [loading, setLoading] = useState(false)
   const [showLikes, setShowLikes] = useState(likes.length)
@@ -88,6 +88,7 @@ const LikeButton: React.FC<Props> = ({
                     >
                       <img
                         className="size-8 object-cover rounded-full"
+                        alt={user.name}
                         src={
                           like.user.avatarUrl
                             ? `${BASE_URL}${like.user.avatarUrl}`

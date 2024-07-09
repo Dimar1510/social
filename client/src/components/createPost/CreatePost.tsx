@@ -1,7 +1,4 @@
-import {
-  useCreatePostMutation,
-  useLazyGetAllPostsQuery,
-} from "../../app/services/postApi"
+import { useCreatePostMutation } from "../../app/services/postApi"
 import { Controller, useForm } from "react-hook-form"
 import { Button, Textarea, Tooltip } from "@nextui-org/react"
 import ErrorMessage from "../ui/error-message/ErrorMessage"

@@ -23,7 +23,7 @@ type Props = {
   onClose: () => void
 }
 
-type Register = {
+type TRegister = {
   email: string
   name: string
   password: string
@@ -31,12 +31,7 @@ type Register = {
 }
 
 const Register: React.FC<Props> = ({ isOpen, onClose }) => {
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-    getValues,
-  } = useForm<Register>({
+  const { handleSubmit, control, getValues } = useForm<TRegister>({
     mode: "onChange",
     reValidateMode: "onBlur",
     defaultValues: {
@@ -55,7 +50,7 @@ const Register: React.FC<Props> = ({ isOpen, onClose }) => {
   const { theme } = useContext(ThemeContext)
   const [loading, setLoading] = useState(false)
 
-  const onSubmit = async (data: Register) => {
+  const onSubmit = async (data: TRegister) => {
     if (getValues("password") !== getValues("password_repeat")) {
       setError("Passwords do not match")
       return

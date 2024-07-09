@@ -6,7 +6,10 @@ import {
   Image,
   Switch,
 } from "@nextui-org/react"
-import { useDispatch, useSelector } from "react-redux"
+import {
+  useAppDispatch as useDispatch,
+  useAppSelector as useSelector,
+} from "../../app/hooks"
 import { logout, selectCurrent } from "../../features/userSlice"
 import { BASE_URL } from "../../constants"
 import { CiLocationOn, CiLogout } from "react-icons/ci"

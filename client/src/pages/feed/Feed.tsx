@@ -1,4 +1,3 @@
-import { Spinner } from "@nextui-org/react"
 import { useGetFeedPostsQuery } from "../../app/services/postApi"
 import Card from "../../components/ui/card/PostCard"
 import PostSkeleton from "../../components/ui/Skeleton/PostSkeleton"

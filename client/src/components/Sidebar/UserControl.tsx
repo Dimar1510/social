@@ -1,5 +1,8 @@
 import { FaRegMoon } from "react-icons/fa"
-import { useDispatch, useSelector } from "react-redux"
+import {
+  useAppDispatch as useDispatch,
+  useAppSelector as useSelector,
+} from "../../app/hooks"
 import { selectCurrent } from "../../features/userSlice"
 import { Button, Card, CardBody, Switch } from "@nextui-org/react"
 import User from "../user/User"

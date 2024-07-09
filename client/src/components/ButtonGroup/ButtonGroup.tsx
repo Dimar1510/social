@@ -10,7 +10,6 @@ import {
   useFollowUserMutation,
   useUnfollowUserMutation,
 } from "../../app/services/followApi"
-import { useLazyGetUserByIdQuery } from "../../app/services/userApi"
 import { useEffect, useState } from "react"
 
 type Props = {
@@ -32,8 +31,6 @@ const ButtonGroup: React.FC<Props> = ({
   const [followersCount, setFollowersCount] = useState(data.followers.length)
   const [showFollowing, setShowFollowing] = useState(data.isFollowing)
 
-  if (!data) return null
-
   useEffect(() => {
     setShowFollowing(data.isFollowing)
     setFollowersCount(data.followers.length)
@@ -50,16 +47,16 @@ const ButtonGroup: React.FC<Props> = ({
         data.isFollowing
           ? await unfollowUser(userId).unwrap()
           : await followUser({ followingId: userId }).unwrap()
-        // await triggerGetUserByIdQuery(userId)
-        setLoading(false)
       }
     } catch (error) {
       setFollowersCount(followersCount)
       setShowFollowing(showFollowing)
+    } finally {
       setLoading(false)
     }
   }
 
+  if (!data) return null
   return (
     <>
       <div className="flex flex-col gap-4">

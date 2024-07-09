@@ -23,8 +23,8 @@ const DeleteButton: React.FC<Props> = ({
   setError,
   setDeleteCard,
 }) => {
-  const [deletePost, deletePostStatus] = useDeletePostMutation()
-  const [deleteComment, deleteCommentStatus] = useDeleteCommentMutation()
+  const [deletePost] = useDeletePostMutation()
+  const [deleteComment] = useDeleteCommentMutation()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
 

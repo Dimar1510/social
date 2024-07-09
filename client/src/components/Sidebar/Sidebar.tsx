@@ -1,6 +1,6 @@
 import NavButton from "./NavButton"
 import { GiBirdTwitter } from "react-icons/gi"
-import { useSelector } from "react-redux"
+import { useAppSelector as useSelector } from "../../app/hooks"
 import { selectCurrent } from "../../features/userSlice"
 import {
   Button,

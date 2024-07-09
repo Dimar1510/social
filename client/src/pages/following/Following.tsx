@@ -1,24 +1,14 @@
-import { useSelector } from "react-redux"
+import { useAppSelector as useSelector } from "../../app/hooks"
 import { selectCurrent } from "../../features/userSlice"
-import { Link, useParams } from "react-router-dom"
-import { Button, Card, CardBody, Divider, Spinner } from "@nextui-org/react"
+import { useParams } from "react-router-dom"
+import { Card, Spinner } from "@nextui-org/react"
 import User from "../../components/user/User"
-import {
-  useGetUserByIdQuery,
-  useLazyGetUserByIdQuery,
-} from "../../app/services/userApi"
+import { useGetUserByIdQuery } from "../../app/services/userApi"
 import Back from "../../components/ui/back/Back"
 import SearchInput from "../../components/ui/searchInput/SearchInput"
 import { useState } from "react"
-import {
-  MdOutlinePersonAddAlt1,
-  MdOutlinePersonAddDisabled,
-} from "react-icons/md"
-import {
-  useFollowUserMutation,
-  useUnfollowUserMutation,
-} from "../../app/services/followApi"
-import FollowingCard from "./FollowingCard"
+import { useUnfollowUserMutation } from "../../app/services/followApi"
+import FollowingCard from "../../components/FollowingCard/FollowingCard"
 
 const Following = () => {
   const params = useParams<{ id: string }>()
