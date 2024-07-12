@@ -1,17 +1,24 @@
 version: "3"
 services:
-  express-app:
+  server:
     build: .
     ports:
       - "3000:3000"
     depends_on:
       - db
     environment:
-      DATABASE_URL: "mongodb://monty:pass@db:27017/mydatabase?authSource=admin&directConnection=true"
+      DATABASE_URL: "mongodb://user:password@db:27017/mydatabase?authSource=admin&directConnection=true"
   db:
     image: prismagraphql/mongo-single-replica:5.0.3
     ports:
       - "27017:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: monty
-      MONGO_INITDB_ROOT_PASSWORD: pass
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: password
+  client:
+    build: ../client
+    ports:
+      - "80:80"
+      - "8000:8000"
+volumes:
+  chirickter:
