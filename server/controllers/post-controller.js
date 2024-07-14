@@ -1,5 +1,5 @@
 const { prisma } = require("../prisma/prisma-client");
-const createError = require("./createError");
+const createError = require("../utils/createError");
 const fs = require("fs");
 
 const PostController = {

@@ -1,7 +1,7 @@
 const { prisma } = require("../prisma/prisma-client");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const createError = require("./createError");
+const createError = require("../utils/createError");
 const fs = require("fs");
 
 const UserController = {
