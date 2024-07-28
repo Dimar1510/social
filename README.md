@@ -57,7 +57,7 @@ mv social/client/.env.local social/client/.env
 cd social/server
 ```
 
-4. Rename server .env.local file to .env
+4. Rename server .env.local file to .env (in case you want to change database URL or compose project name)
 
 ```bash
 mv .env.local .env
